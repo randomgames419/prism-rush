@@ -1,0 +1,2525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRISM RUSH — Gridiron Series</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0a0c10;
+  --ink-2:#12151b;
+  --panel:#181c24;
+  --panel-2:#20242e;
+  --line:#2a2f3a;
+  --chrome:#c7cfda;
+  --chrome-dim:#7d8492;
+  --prism-a:#6f5cff;
+  --prism-b:#00d4ff;
+  --gold:#ffb84d;
+  --legend:#ff3b5c;
+  --good:#33d17a;
+  --coin:#ffcf4d;
+  --r-common:#7d8492;
+  --r-holo:#6fd3ff;
+  --r-prism:#a58cff;
+  --r-chrome:#ffb84d;
+  --r-vertex:#ff6a6a;
+  --r-radiant:#ff3b9a;
+  --r-insert:#37ffb0;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  background:
+    radial-gradient(1200px 700px at 15% -10%, #1a1440 0%, transparent 55%),
+    radial-gradient(1000px 600px at 110% 10%, #001e2c 0%, transparent 55%),
+    var(--ink);
+  color:var(--chrome);
+  font-family:'Barlow', sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+.display{font-family:'Oswald',sans-serif; letter-spacing:.02em;}
+.mono{font-family:'Barlow Condensed', sans-serif; letter-spacing:.04em;}
+
+body::after{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:1; opacity:.035; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+#app{position:relative; z-index:2;}
+
+::-webkit-scrollbar{width:10px; height:10px;}
+::-webkit-scrollbar-thumb{background:var(--line); border-radius:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+
+/* ===== HERO ===== */
+.hero{
+  position:relative; overflow:hidden; border-radius:18px; margin:6px 0 26px; padding:30px 26px;
+  background:
+    radial-gradient(600px 300px at 8% 20%, rgba(111,92,255,.35), transparent 60%),
+    radial-gradient(500px 280px at 95% 0%, rgba(0,212,255,.28), transparent 55%),
+    linear-gradient(160deg, #171a26, #0a0c10 85%);
+  border:1px solid var(--line);
+}
+.hero-eyebrow{font-family:'Barlow Condensed',sans-serif; letter-spacing:.2em; text-transform:uppercase; font-size:11.5px; color:var(--prism-b);}
+.hero h1{font-family:'Oswald',sans-serif; color:#fff; font-size:32px; margin:6px 0 8px; letter-spacing:.01em;}
+.hero p{color:var(--chrome-dim); font-size:14px; max-width:560px; line-height:1.55; margin:0 0 18px;}
+.hero-stats{display:flex; flex-wrap:wrap; gap:10px;}
+.hero-stat{
+  background:rgba(255,255,255,.04); border:1px solid var(--line); border-radius:10px; padding:8px 14px;
+}
+.hero-stat b{display:block; color:#fff; font-family:'Oswald',sans-serif; font-size:17px;}
+.hero-stat span{font-size:10px; color:var(--chrome-dim); text-transform:uppercase; letter-spacing:.09em;}
+
+/* ===== SHELL ===== */
+#app{max-width:1180px; margin:0 auto; padding:0 18px 60px;}
+
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 0 10px; position:sticky; top:0; z-index:40;
+  background:linear-gradient(180deg, var(--ink) 70%, transparent);
+}
+.brand{display:flex; align-items:center; gap:12px;}
+.brand-mark{
+  width:38px;height:38px;border-radius:9px;
+  background:conic-gradient(from 200deg, var(--prism-a), var(--prism-b), var(--gold), var(--prism-a));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 24px rgba(111,92,255,.45);
+  font-family:'Oswald',sans-serif; font-weight:700; color:#0a0c10; font-size:18px;
+}
+.brand-name{font-family:'Oswald',sans-serif; font-weight:600; font-size:20px; color:#fff; letter-spacing:.03em;}
+.brand-sub{font-size:11px; color:var(--chrome-dim); text-transform:uppercase; letter-spacing:.14em; margin-top:-2px;}
+
+.wallet{
+  display:flex; align-items:center; gap:8px;
+  background:var(--panel); border:1px solid var(--line); border-radius:999px;
+  padding:8px 16px 8px 10px;
+}
+.wallet .coin-ic{
+  width:22px;height:22px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #fff6d9, var(--coin) 55%, #b8860b);
+  box-shadow:0 0 10px rgba(255,207,77,.5);
+}
+.wallet b{color:#fff; font-family:'Oswald',sans-serif; font-size:16px;}
+
+nav.tabs{display:flex; gap:6px; margin:18px 0 22px; border-bottom:1px solid var(--line); padding-bottom:0;}
+nav.tabs button{
+  background:none; border:none; color:var(--chrome-dim); font-family:'Oswald',sans-serif;
+  font-size:14px; letter-spacing:.06em; text-transform:uppercase; padding:10px 16px;
+  cursor:pointer; position:relative; transition:color .15s;
+}
+nav.tabs button:hover{color:var(--chrome);}
+nav.tabs button.active{color:#fff;}
+nav.tabs button.active::after{
+  content:''; position:absolute; left:12px; right:12px; bottom:-1px; height:2px;
+  background:linear-gradient(90deg, var(--prism-a), var(--prism-b));
+  box-shadow:0 0 8px var(--prism-b);
+}
+
+.view{display:none; animation:fadeIn .25s ease;}
+.view.active{display:block;}
+@keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+/* ===== SHOP / SHELF ===== */
+.shelf-head{margin-bottom:16px;}
+.shelf-head h1{font-family:'Oswald',sans-serif; color:#fff; font-size:26px; margin:0 0 4px;}
+.shelf-head p{color:var(--chrome-dim); font-size:14px; margin:0; max-width:640px; line-height:1.5;}
+
+.product-grid{
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(230px,1fr)); gap:16px; margin-top:18px;
+}
+.product-card{
+  background:linear-gradient(160deg, var(--panel-2), var(--panel));
+  border:1px solid var(--line); border-radius:14px; padding:16px;
+  position:relative; overflow:hidden; cursor:pointer;
+  transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.product-card:hover{transform:translateY(-4px); border-color:#3a4152; box-shadow:0 12px 30px rgba(0,0,0,.4);}
+.product-card::before{
+  content:''; position:absolute; inset:0; opacity:.5; pointer-events:none;
+  background:linear-gradient(120deg, transparent 40%, rgba(255,255,255,.06) 50%, transparent 60%);
+  background-size:220% 220%; background-position:0% 0%;
+}
+.product-card:hover::before{animation:sheen 1.1s ease;}
+@keyframes sheen{to{background-position:120% 120%;}}
+
+.product-box{
+  height:110px; border-radius:10px; margin-bottom:12px; position:relative; overflow:hidden;
+  display:flex; align-items:flex-end; padding:10px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+}
+.product-box .glare{position:absolute; inset:0; background:linear-gradient(115deg, rgba(255,255,255,.22), transparent 45%);}
+.product-box span{font-family:'Oswald',sans-serif; font-weight:700; color:#fff; font-size:13px; text-transform:uppercase; letter-spacing:.08em; text-shadow:0 2px 6px rgba(0,0,0,.5);}
+
+.ptype-hobby{background:linear-gradient(135deg,#1c2a52,#0c1230);}
+.ptype-fotl{background:linear-gradient(135deg,#3a1650,#150a2e);}
+.ptype-blaster{background:linear-gradient(135deg,#0d3b3a,#08201f);}
+.ptype-mega{background:linear-gradient(135deg,#4a2308,#20100a);}
+.ptype-h2{background:linear-gradient(135deg,#123322,#081a13);}
+.ptype-choice{background:linear-gradient(135deg,#4a0f2e,#1e0714);}
+.ptype-value{background:linear-gradient(135deg,#1e2a1c,#0c150c);}
+.ptype-jumbo{background:linear-gradient(135deg,#2a1c46,#12081f);}
+.ptype-tin{background:linear-gradient(135deg,#3a2a08,#1c1404);}
+.ptype-vault{background:linear-gradient(135deg,#241428,#05050a); position:relative;}
+.ptype-vault::after{
+  content:''; position:absolute; inset:0;
+  background:conic-gradient(from 120deg, rgba(255,184,77,.18), rgba(111,92,255,.18), rgba(0,212,255,.18), rgba(255,184,77,.18));
+  mix-blend-mode:screen;
+}
+.product-card.is-vault{border-color:#4a3a20; box-shadow:0 0 0 1px rgba(255,184,77,.15), 0 12px 30px rgba(0,0,0,.5);}
+.product-card.is-vault:hover{box-shadow:0 0 0 1px rgba(255,184,77,.35), 0 16px 40px rgba(255,184,77,.15);}
+
+.product-name{font-family:'Oswald',sans-serif; color:#fff; font-size:16px; margin:2px 0 2px;}
+.product-tagline{font-size:11.5px; color:var(--chrome-dim); margin-bottom:8px; line-height:1.4; min-height:16px;}
+.vault-tag{
+  position:absolute; top:8px; right:8px; z-index:2; font-family:'Barlow Condensed',sans-serif; font-weight:700;
+  font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:#0a0c10;
+  background:linear-gradient(120deg, var(--gold), #fff6d9); padding:3px 7px; border-radius:5px;
+}
+.product-meta{font-size:12.5px; color:var(--chrome-dim); line-height:1.6; margin-bottom:12px;}
+.product-meta b{color:var(--chrome);}
+.product-buy{
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+}
+.price{display:flex; align-items:center; gap:6px; font-family:'Oswald',sans-serif; color:var(--coin); font-size:15px;}
+.buy-btn{
+  background:linear-gradient(135deg, var(--prism-a), var(--prism-b)); border:none; color:#fff;
+  font-family:'Oswald',sans-serif; font-size:12.5px; text-transform:uppercase; letter-spacing:.06em;
+  padding:8px 14px; border-radius:8px; cursor:pointer; transition:filter .15s, transform .15s;
+}
+.buy-btn:hover{filter:brightness(1.15);}
+.buy-btn:active{transform:scale(.96);}
+.buy-btn:disabled{opacity:.35; cursor:not-allowed;}
+.case-break-btn{
+  width:100%; margin-top:10px; background:transparent; border:1px dashed var(--line); color:var(--chrome-dim);
+  font-family:'Barlow Condensed',sans-serif; font-size:11.5px; letter-spacing:.04em; padding:8px; border-radius:8px;
+  cursor:pointer; transition:border-color .15s, color .15s;
+}
+.case-break-btn:hover{border-color:var(--gold); color:var(--gold);}
+
+/* ===== ODDS BOARD ===== */
+.odds-row{
+  display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--line);
+}
+.odds-row:last-child{border-bottom:none;}
+.odds-thumb{
+  width:64px; height:90px; position:relative; overflow:hidden; border-radius:8px; flex:0 0 auto;
+  box-shadow:0 4px 12px rgba(0,0,0,.4);
+}
+.odds-thumb .tcard{
+  width:230px; height:322px; position:absolute; top:0; left:0;
+  transform:scale(0.2783); transform-origin:top left; pointer-events:none;
+}
+.odds-info{flex:1; min-width:0;}
+.odds-info .rname{font-family:'Oswald',sans-serif; font-weight:600; font-size:14.5px;}
+.odds-info .rmeta{font-size:11.5px; color:var(--chrome-dim); margin-top:2px;}
+.odds-pct{font-family:'Oswald',sans-serif; font-weight:700; font-size:17px; color:#fff; min-width:64px; text-align:right;}
+
+/* ===== REWARDS ===== */
+.rewards-section{margin-bottom:30px;}
+.rewards-heading{
+  font-family:'Oswald',sans-serif; color:#fff; font-size:17px; margin-bottom:14px;
+  display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+}
+.rewards-sub{font-size:11.5px; color:var(--chrome-dim); font-family:'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:.08em;}
+
+.bounty-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:14px;}
+.bounty-card{
+  background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px;
+  display:flex; flex-direction:column; gap:10px;
+}
+.bounty-card.ready{border-color:var(--prism-b); box-shadow:0 0 0 1px rgba(0,212,255,.15);}
+.bounty-card.claimed{opacity:.55;}
+.bounty-desc{font-size:13px; color:var(--chrome); line-height:1.4; min-height:36px;}
+.bounty-bar{height:6px; border-radius:4px; background:var(--ink-2); overflow:hidden;}
+.bounty-fill{height:100%; background:linear-gradient(90deg, var(--prism-a), var(--prism-b)); transition:width .3s;}
+.bounty-foot{display:flex; justify-content:space-between; align-items:center; font-size:12px;}
+.bounty-progress{color:var(--chrome-dim); font-family:'Barlow Condensed',sans-serif;}
+.bounty-reward{display:flex; align-items:center; gap:5px; color:var(--coin); font-family:'Oswald',sans-serif; font-weight:600;}
+.bounty-claim{width:100%; padding:9px; font-size:12px;}
+.bounty-claim:disabled{opacity:.4; cursor:not-allowed; background:var(--panel-2);}
+
+.milestone-ladder{display:flex; flex-direction:column; gap:10px;}
+.milestone-row{
+  display:grid; grid-template-columns:70px 1fr 70px 100px; gap:14px; align-items:center;
+  background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:10px 14px;
+}
+.milestone-row.ready{border-color:var(--gold);}
+.milestone-row.claimed{opacity:.5;}
+.ms-count{font-family:'Oswald',sans-serif; color:#fff; font-size:15px; font-weight:600;}
+.ms-count span{display:block; font-size:9px; color:var(--chrome-dim); text-transform:uppercase; letter-spacing:.08em; font-weight:400; font-family:'Barlow Condensed',sans-serif;}
+.ms-bar{height:6px; border-radius:4px; background:var(--ink-2); overflow:hidden;}
+.ms-fill{height:100%; background:linear-gradient(90deg, var(--gold), #fff6d9); transition:width .3s;}
+.ms-reward{display:flex; align-items:center; gap:5px; color:var(--coin); font-family:'Oswald',sans-serif; font-size:13px; font-weight:600;}
+.ms-claim{padding:8px 10px; font-size:11px; white-space:nowrap;}
+.ms-claim:disabled{opacity:.35; cursor:not-allowed;}
+
+.sell-panel{
+  background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px;
+  display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.sell-panel .buy-btn:disabled{opacity:.35; cursor:not-allowed;}
+
+
+
+/* ===== RIP VIEW ===== */
+.rip-stage{
+  min-height:520px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  position:relative; padding:20px 0;
+}
+.rip-progress{display:flex; gap:6px; margin-bottom:26px;}
+.rip-top-row{display:flex; align-items:center; gap:16px; margin-bottom:6px; flex-wrap:wrap; justify-content:center;}
+.rip-top-row .rip-progress{margin-bottom:0;}
+.fast-toggle{
+  background:var(--panel); border:1px solid var(--line); color:var(--chrome-dim); font-family:'Barlow Condensed',sans-serif;
+  font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; padding:6px 12px; border-radius:999px; cursor:pointer;
+}
+.fast-toggle.on{border-color:var(--prism-b); color:#fff; box-shadow:0 0 10px rgba(0,212,255,.25);}
+.pity-note{color:var(--chrome-dim); font-size:11px; margin-bottom:16px; letter-spacing:.03em;}
+.wishlist-hit-label{color:var(--gold); font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; margin-top:2px;}
+.rip-dot{width:8px;height:8px;border-radius:50%; background:var(--line); transition:background .2s, transform .2s;}
+.rip-dot.done{background:var(--prism-b); box-shadow:0 0 8px var(--prism-b);}
+.rip-dot.now{background:#fff; transform:scale(1.3);}
+
+.pack-wrap{position:relative; width:220px; height:300px; cursor:pointer; perspective:900px;}
+.pack-foil{
+  width:100%;height:100%; border-radius:14px; position:relative; overflow:hidden;
+  box-shadow:0 20px 50px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.08);
+  display:flex; align-items:center; justify-content:center; flex-direction:column;
+  transition:transform .5s cubic-bezier(.2,.7,.3,1.4), opacity .4s;
+}
+.pack-foil .pf-title{font-family:'Oswald',sans-serif; color:#fff; font-weight:700; font-size:22px; letter-spacing:.05em; text-shadow:0 2px 10px rgba(0,0,0,.5); z-index:2;}
+.pack-foil .pf-sub{font-family:'Barlow Condensed',sans-serif; color:rgba(255,255,255,.75); font-size:12px; letter-spacing:.16em; text-transform:uppercase; z-index:2; margin-top:4px;}
+.pack-foil .pf-sheen{
+  position:absolute; inset:-40%; background:conic-gradient(from 0deg, transparent, rgba(255,255,255,.35), transparent 30%);
+  animation:spin 4s linear infinite; opacity:.6;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.pack-foil.tearing{animation:tear .55s forwards;}
+@keyframes tear{
+  0%{transform:scale(1);}
+  40%{transform:scale(1.06) rotate(-2deg);}
+  100%{transform:scale(.2) rotate(8deg); opacity:0;}
+}
+.tap-hint{margin-top:18px; color:var(--chrome-dim); font-size:13px; letter-spacing:.06em; text-transform:uppercase; font-family:'Barlow Condensed',sans-serif;}
+
+.card-reveal-zone{min-height:520px; display:flex; align-items:center; justify-content:center; gap:26px; flex-wrap:wrap;}
+
+/* ===== TRADING CARD ===== */
+.tcard{
+  width:230px; height:322px; border-radius:16px; position:relative;
+  transform-style:preserve-3d; transition:transform .12s ease-out;
+  cursor:pointer;
+}
+.tcard-inner{
+  position:absolute; inset:0; border-radius:16px; overflow:hidden;
+  box-shadow:0 18px 40px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.08);
+}
+.tcard-art{position:absolute; inset:0;}
+.tcard-frame{
+  position:absolute; inset:8px; border-radius:11px; border:1.5px solid rgba(255,255,255,.35);
+  pointer-events:none;
+}
+.tcard-topbar{
+  position:absolute; top:14px; left:14px; right:14px; display:flex; justify-content:space-between; align-items:flex-start; z-index:5;
+}
+.tcard-team{font-family:'Oswald',sans-serif; font-weight:600; font-size:10.5px; color:#fff; text-transform:uppercase; letter-spacing:.08em; text-shadow:0 1px 4px rgba(0,0,0,.6);}
+.tcard-pos{
+  font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; color:#0a0c10; background:#fff;
+  border-radius:5px; padding:2px 6px; letter-spacing:.04em;
+}
+.tcard-num{
+  position:absolute; bottom:10px; left:14px; font-family:'Barlow Condensed',sans-serif; font-size:9px; color:rgba(255,255,255,.7); letter-spacing:.06em; z-index:5;
+}
+.tcard-rating{
+  position:absolute; top:38px; left:14px; font-family:'Oswald',sans-serif; font-weight:700; color:#fff; font-size:20px; z-index:5;
+  text-shadow:0 2px 8px rgba(0,0,0,.6);
+}
+.tcard-rating small{font-size:9px; display:block; font-weight:500; letter-spacing:.1em; color:rgba(255,255,255,.65);}
+.tcard-name{
+  position:absolute; left:14px; right:14px; bottom:26px; z-index:5;
+  font-family:'Oswald',sans-serif; font-weight:600; color:#fff; font-size:15.5px; line-height:1.1;
+  text-shadow:0 2px 6px rgba(0,0,0,.6);
+}
+.tcard-name span{display:block; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:10px; color:var(--r-glow, #fff); letter-spacing:.14em; text-transform:uppercase; margin-top:2px;}
+.tcard-silhouette{position:absolute; inset:0; opacity:.92;}
+.tcard-badge{
+  position:absolute; top:12px; right:14px; z-index:6;
+  font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:9px; letter-spacing:.08em;
+  padding:3px 7px; border-radius:5px; text-transform:uppercase;
+}
+.tcard-serial{
+  position:absolute; bottom:9px; right:14px; z-index:6; font-family:'Barlow Condensed',sans-serif; font-size:9.5px; font-weight:600; color:#fff; letter-spacing:.04em;
+}
+.tcard-holo{
+  position:absolute; inset:0; mix-blend-mode:color-dodge; opacity:.0; pointer-events:none; z-index:4;
+  background:repeating-linear-gradient(115deg, #ff5cf1 0%, #5cffdc 12%, #5c8bff 24%, #f1ff5c 36%, #ff5c5c 48%, #ff5cf1 60%);
+  background-size:220% 220%;
+}
+.tcard-glint{
+  position:absolute; inset:0; pointer-events:none; z-index:7; opacity:0;
+  background:radial-gradient(circle at var(--gx,50%) var(--gy,50%), rgba(255,255,255,.55), transparent 45%);
+  mix-blend-mode:overlay;
+}
+.tcard.rare-holo .tcard-holo{opacity:.35;}
+.tcard.rare-prism .tcard-holo{opacity:.5;}
+.tcard.rare-chrome .tcard-holo{opacity:.62;}
+.tcard.rare-vertex .tcard-holo{opacity:.72;}
+.tcard.rare-radiant .tcard-holo{opacity:.85;}
+.tcard.rare-radiant .tcard-inner{animation:radiantPulse 2.4s ease-in-out infinite;}
+@keyframes radiantPulse{
+  0%,100%{box-shadow:0 18px 40px rgba(0,0,0,.55), 0 0 22px rgba(255,59,154,.35), inset 0 0 0 1px rgba(255,255,255,.15);}
+  50%{box-shadow:0 18px 40px rgba(0,0,0,.55), 0 0 44px rgba(255,59,154,.65), inset 0 0 0 1px rgba(255,255,255,.3);}
+}
+.tcard.rare-insert .tcard-holo{opacity:.55; background:repeating-linear-gradient(115deg, #37ffb0 0%, #5cffe0 14%, #37ffb0 28%);}
+.tcard.rare-insert .tcard-inner{box-shadow:0 18px 40px rgba(0,0,0,.55), 0 0 26px rgba(55,255,176,.4), inset 0 0 0 1px rgba(255,255,255,.12);}
+
+.newcard-flag{
+  position:absolute; top:-10px; left:-10px; z-index:8; background:var(--good); color:#04140b;
+  font-family:'Oswald',sans-serif; font-weight:700; font-size:10px; text-transform:uppercase;
+  padding:4px 8px; border-radius:6px; box-shadow:0 4px 10px rgba(0,0,0,.4);
+}
+
+.card-caption{text-align:center; margin-top:14px; min-height:20px;}
+.card-caption .rarity-label{
+  font-family:'Oswald',sans-serif; font-weight:600; font-size:13px; letter-spacing:.1em; text-transform:uppercase;
+}
+
+.rip-controls{display:flex; gap:12px; margin-top:26px;}
+.ghost-btn{
+  background:transparent; border:1px solid var(--line); color:var(--chrome); font-family:'Oswald',sans-serif;
+  font-size:13px; letter-spacing:.05em; text-transform:uppercase; padding:10px 20px; border-radius:9px; cursor:pointer;
+  transition:border-color .15s, color .15s;
+}
+.ghost-btn:hover{border-color:var(--prism-b); color:#fff;}
+.solid-btn{
+  background:linear-gradient(135deg, var(--prism-a), var(--prism-b)); border:none; color:#fff; font-family:'Oswald',sans-serif;
+  font-size:13px; letter-spacing:.05em; text-transform:uppercase; padding:10px 22px; border-radius:9px; cursor:pointer;
+}
+
+/* ===== BOX SUMMARY ===== */
+.summary-wrap{text-align:center; padding:20px 0;}
+.summary-wrap h2{font-family:'Oswald',sans-serif; color:#fff; font-size:24px; margin-bottom:4px;}
+.summary-wrap p{color:var(--chrome-dim); font-size:13px; margin-bottom:22px;}
+.summary-grid{display:flex; flex-wrap:wrap; gap:14px; justify-content:center; max-width:980px; margin:0 auto;}
+
+.case-loading{
+  min-height:400px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px;
+  color:var(--chrome-dim); font-family:'Oswald',sans-serif; font-size:15px; letter-spacing:.03em;
+}
+.case-loading-spin{
+  width:44px; height:44px; border-radius:50%; border:3px solid var(--line); border-top-color:var(--prism-b);
+  animation:spin 0.9s linear infinite;
+}
+.case-stats-row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:10px;}
+.case-stat-chip{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:10px 16px; min-width:80px;}
+.case-stat-chip b{display:block; font-family:'Oswald',sans-serif; font-size:18px;}
+.case-stat-chip span{font-size:10px; color:var(--chrome-dim); text-transform:uppercase; letter-spacing:.08em;}
+
+/* ===== BINDER ===== */
+.binder-toolbar{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:18px; justify-content:space-between;}
+.binder-stats{display:flex; gap:18px; flex-wrap:wrap;}
+.stat-pill{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:8px 14px;}
+.stat-pill b{color:#fff; font-family:'Oswald',sans-serif; display:block; font-size:16px;}
+.stat-pill span{font-size:10.5px; color:var(--chrome-dim); text-transform:uppercase; letter-spacing:.08em;}
+
+select, .filter-btn{
+  background:var(--panel); border:1px solid var(--line); color:var(--chrome); font-family:'Barlow',sans-serif;
+  font-size:13px; padding:8px 12px; border-radius:8px; cursor:pointer;
+}
+.filter-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;}
+.filter-btn.active{border-color:var(--prism-b); color:#fff;}
+
+.binder-grid{
+  display:grid; grid-template-columns:repeat(auto-fill, 158px); gap:20px 14px; justify-content:start;
+}
+.binder-cell{display:flex; flex-direction:column; align-items:center; gap:7px;}
+.mini-tcard-holder{
+  width:158px; height:221px; position:relative; overflow:hidden; border-radius:13px; cursor:pointer;
+  box-shadow:0 8px 20px rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.06);
+  transition:transform .15s;
+}
+.mini-tcard-holder:hover{transform:translateY(-3px);}
+.mini-tcard-holder .tcard{
+  width:230px; height:322px; position:absolute; top:0; left:0;
+  transform:scale(0.687); transform-origin:top left; pointer-events:none;
+}
+.mini-tcard-holder .mc-dupe{
+  position:absolute; top:6px; right:6px; z-index:8; background:rgba(0,0,0,.6); color:#fff; font-family:'Barlow Condensed',sans-serif;
+  font-size:10px; font-weight:700; padding:2px 7px; border-radius:5px;
+}
+.mini-card-locked{
+  width:158px; height:221px; border-radius:13px; position:relative; overflow:hidden; cursor:default;
+  background:var(--panel); box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
+  display:flex; align-items:center; justify-content:center; flex-direction:column; gap:6px;
+}
+.mini-card-locked .lock-icon{position:static; color:var(--chrome-dim); font-size:20px;}
+.mini-card-locked .mc-num{color:var(--chrome-dim); font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:.06em;}
+.rarity-dots{display:flex; gap:5px; flex-wrap:wrap; justify-content:center; max-width:158px;}
+.rarity-dot{
+  width:9px; height:9px; border-radius:50%; box-shadow:0 0 5px currentColor; cursor:default;
+  border:1px solid rgba(255,255,255,.4);
+}
+
+/* ===== TROPHY CASE ===== */
+.trophy-grid{display:grid; grid-template-columns:repeat(auto-fill, 170px); gap:24px 16px; justify-content:start;}
+.trophy-slot{display:flex; flex-direction:column; align-items:center; gap:8px;}
+.trophy-label{font-family:'Oswald',sans-serif; font-size:12px; color:var(--chrome-dim); text-align:center; line-height:1.3;}
+
+/* ===== WISHLIST / CHECKLIST TOOLS ===== */
+.wishlist-strip{
+  display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; padding:12px; background:var(--panel);
+  border:1px solid var(--line); border-radius:10px;
+}
+.wishlist-strip.empty{display:none;}
+.wishlist-chip{
+  display:flex; align-items:center; gap:6px; background:var(--panel-2); border:1px solid var(--line);
+  border-radius:999px; padding:5px 10px 5px 12px; font-size:11.5px; color:var(--chrome);
+}
+.wishlist-chip button{
+  background:none; border:none; color:var(--chrome-dim); cursor:pointer; font-size:13px; line-height:1; padding:0 2px;
+}
+.wishlist-chip button:hover{color:var(--legend);}
+.checklist-toolbar{
+  display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;
+}
+.checklist-row-btn{
+  background:var(--panel-2); border:1px solid var(--line); color:var(--chrome-dim); font-family:'Barlow Condensed',sans-serif;
+  font-size:10px; padding:3px 8px; border-radius:6px; cursor:pointer; margin-left:8px;
+}
+.checklist-row-btn:hover{color:#fff; border-color:var(--prism-b);}
+.checklist-row-btn.pinned{color:var(--gold); border-color:var(--gold);}
+
+/* ===== ACHIEVEMENTS ===== */
+.achievements-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:14px;}
+.ach-card{
+  background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px;
+  display:flex; gap:12px; align-items:flex-start;
+}
+.ach-card.unlocked{border-color:var(--gold); box-shadow:0 0 0 1px rgba(255,184,77,.12);}
+.ach-icon{
+  width:38px; height:38px; border-radius:10px; flex:0 0 auto; display:flex; align-items:center; justify-content:center;
+  font-size:17px; background:var(--panel-2);
+}
+.ach-card.unlocked .ach-icon{background:linear-gradient(135deg, var(--gold), #fff6d9); color:#0a0c10;}
+.ach-name{font-family:'Oswald',sans-serif; color:#fff; font-size:14.5px; margin-bottom:2px;}
+.ach-card:not(.unlocked) .ach-name{color:var(--chrome-dim);}
+.ach-desc{font-size:12px; color:var(--chrome-dim); line-height:1.4;}
+.ach-reward{font-size:11px; color:var(--coin); margin-top:6px; font-family:'Oswald',sans-serif;}
+
+/* ===== TOASTS ===== */
+#toastRoot{position:fixed; top:16px; right:16px; z-index:200; display:flex; flex-direction:column; gap:8px;}
+.toast{
+  background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--prism-b);
+  color:var(--chrome); padding:10px 16px; border-radius:8px; font-size:13px; box-shadow:0 10px 26px rgba(0,0,0,.4);
+  animation:toastIn .25s ease;
+}
+@keyframes toastIn{from{opacity:0; transform:translateX(20px);} to{opacity:1; transform:translateX(0);}}
+
+/* ===== MODAL ===== */
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(5,6,9,.72); backdrop-filter:blur(6px); z-index:100;
+  display:none; align-items:center; justify-content:center; padding:20px;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:28px; max-width:340px; text-align:center;
+}
+.modal-box h3{font-family:'Oswald',sans-serif; color:#fff; margin:0 0 10px;}
+.modal-box p{font-size:13.5px; color:var(--chrome-dim); line-height:1.6; margin-bottom:20px;}
+
+.card-modal-box{max-width:520px; text-align:left;}
+.card-modal-body{display:flex; gap:22px; flex-wrap:wrap; align-items:flex-start;}
+.card-modal-feature{width:180px; height:252px; position:relative; flex:0 0 auto;}
+.card-modal-feature .tcard{width:180px; height:252px;}
+.card-modal-info{flex:1; min-width:200px;}
+.cmi-name{font-family:'Oswald',sans-serif; color:#fff; font-size:19px; font-weight:600;}
+.cmi-meta{font-size:12px; color:var(--chrome-dim); margin-top:4px; line-height:1.6;}
+.cmi-sub{font-size:11px; color:var(--chrome-dim); text-transform:uppercase; letter-spacing:.1em; margin:16px 0 8px; border-top:1px solid var(--line); padding-top:14px;}
+.cmi-row{display:flex; align-items:center; gap:8px; padding:6px 0; font-size:12.5px; flex-wrap:wrap;}
+.cmi-sell{
+  background:var(--panel-2); border:1px solid var(--line); color:var(--chrome); font-family:'Barlow Condensed',sans-serif;
+  font-size:10.5px; padding:4px 8px; border-radius:6px; cursor:pointer; white-space:nowrap; flex:0 0 auto;
+}
+.cmi-sell:hover{border-color:var(--prism-b); color:#fff;}
+.cmi-dot{width:9px; height:9px; border-radius:50%; box-shadow:0 0 5px currentColor; flex:0 0 auto;}
+.cmi-rlabel{font-family:'Oswald',sans-serif; font-weight:600; flex:1;}
+.cmi-rserial{color:var(--chrome-dim); font-family:'Barlow Condensed',sans-serif; font-size:11px;}
+.cmi-rcount{color:#fff; font-family:'Oswald',sans-serif; font-size:12px; min-width:26px; text-align:right;}
+
+footer.hint{text-align:center; color:var(--chrome-dim); font-size:11.5px; margin-top:40px; letter-spacing:.04em;}
+
+@media(max-width:640px){
+  .tcard{width:200px; height:280px;}
+  .product-grid{grid-template-columns:repeat(auto-fill, minmax(160px,1fr));}
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-mark">PR</div>
+      <div>
+        <div class="brand-name">PRISM RUSH</div>
+        <div class="brand-sub">Gridiron Series &middot; NGC</div>
+      </div>
+    </div>
+    <div class="wallet"><div class="coin-ic"></div><b id="coinCount">0</b></div>
+  </div>
+
+  <nav class="tabs">
+    <button data-view="shop" class="active">Shop</button>
+    <button data-view="odds">Pull Rates</button>
+    <button data-view="rewards">Rewards</button>
+    <button data-view="trophy">Trophy Case</button>
+    <button data-view="binder">Binder</button>
+    <button data-view="checklist">Checklist</button>
+    <button data-view="achievements">Achievements</button>
+  </nav>
+
+  <!-- SHOP -->
+  <div class="view active" id="view-shop">
+    <div class="hero">
+      <div class="hero-eyebrow">2026 Release &middot; NGC Season Preview</div>
+      <h1>Prism Rush: Gridiron Series</h1>
+      <p>Twelve original clubs. A 300-card base set. Ten box formats from a single Value Pack up to the full Vault Box. Every format's odds and print runs are laid out before you buy — check Pull Rates any time.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><b>12</b><span>Teams</span></div>
+        <div class="hero-stat"><b>300</b><span>Base Cards</span></div>
+        <div class="hero-stat"><b>10</b><span>Box Formats</span></div>
+        <div class="hero-stat"><b>6</b><span>Rarity Tiers</span></div>
+        <div class="hero-stat" id="pityHeroStat"><b>0/30</b><span>Pity Meter</span></div>
+      </div>
+    </div>
+    <div class="shelf-head">
+      <h1>Shop Boxes</h1>
+      <p>Pick a format below. Cheaper packs favor Base and Holo; Vault and FOTL push deeper into Chrome, Vertex, and 1/1 Radiant territory.</p>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+  </div>
+
+  <!-- RIP -->
+  <div class="view" id="view-rip">
+    <div class="rip-stage" id="ripStage"></div>
+  </div>
+
+  <!-- ODDS -->
+  <div class="view" id="view-odds">
+    <div class="shelf-head">
+      <h1>Pull Rates &amp; What You Can Get</h1>
+      <p>Every rarity tier, its odds per card, and a live example of how it looks in-hand. Rarer tiers carry lower pull rates and lower print runs.</p>
+    </div>
+    <div id="oddsBoard"></div>
+  </div>
+
+  <!-- REWARDS -->
+  <div class="view" id="view-rewards">
+    <div class="shelf-head">
+      <h1>Rewards</h1>
+      <p>Daily bounties reset every 24 hours. Milestones pay out once as you grow your collection — and duplicates are always worth something.</p>
+    </div>
+    <div id="rewardsBoard"></div>
+  </div>
+
+  <!-- TROPHY CASE -->
+  <div class="view" id="view-trophy">
+    <div class="shelf-head">
+      <h1>Trophy Case</h1>
+      <p>Your single best pull from each of the twelve teams — automatically the rarest card you own for that club.</p>
+    </div>
+    <div id="trophyGrid" class="trophy-grid"></div>
+  </div>
+
+  <!-- BINDER -->
+  <div class="view" id="view-binder">
+    <div class="binder-toolbar">
+      <div class="binder-stats" id="binderStats"></div>
+      <select id="teamFilter"></select>
+    </div>
+    <div class="filter-row" id="rarityFilter"></div>
+    <div id="wishlistStrip"></div>
+    <div class="binder-grid" id="binderGrid"></div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="view" id="view-checklist">
+    <div class="shelf-head">
+      <h1>Full Checklist</h1>
+      <p>All 300 base cards across the twelve-team Gridiron Series set. Pin cards to your Wishlist or redeem a Wildcard on anything you're missing.</p>
+    </div>
+    <div id="checklistToolbar" class="checklist-toolbar"></div>
+    <div class="binder-grid" id="checklistGrid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));"></div>
+  </div>
+
+  <!-- ACHIEVEMENTS -->
+  <div class="view" id="view-achievements">
+    <div class="shelf-head">
+      <h1>Achievements</h1>
+      <p>One-off badges that pay out automatically the moment you earn them.</p>
+    </div>
+    <div id="achievementsGrid" class="achievements-grid"></div>
+  </div>
+
+  <footer class="hint">Prism Rush is an original fictional card set. Progress saves automatically to this browser.</footer>
+</div>
+
+<div id="toastRoot"></div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <h3 id="modalTitle">Not enough coins</h3>
+    <p id="modalBody">You need more Prism Coins to open this product. Complete daily pulls or wait for your next bonus.</p>
+    <button class="solid-btn" id="modalClose">Got it</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="cardModalOverlay">
+  <div class="modal-box card-modal-box">
+    <div class="card-modal-body" id="cardModalBody"></div>
+    <button class="solid-btn" id="cardModalClose" style="margin-top:16px;">Close</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   SEEDED RNG — deterministic 300-card checklist every load
+   ============================================================ */
+function mulberry32(seed){
+  return function(){
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const setRng = mulberry32(190226); // fixed seed → same checklist for everyone
+function pick(rng, arr){ return arr[Math.floor(rng()*arr.length)]; }
+function randInt(rng, min, max){ return Math.floor(rng()*(max-min+1))+min; }
+
+/* ============================================================
+   TEAMS — fictional league, original names/colors
+   ============================================================ */
+const TEAMS = [
+  {id:"VCV", city:"Vantage City",   mascot:"Voltage",     c1:"#1c2a52", c2:"#00d4ff"},
+  {id:"IPM", city:"Ironport",       mascot:"Marauders",   c1:"#2b1810", c2:"#c77b3a"},
+  {id:"RLC", city:"Redline",        mascot:"Comets",      c1:"#3a0d0d", c2:"#ff5c3d"},
+  {id:"NGT", city:"Northgate",      mascot:"Timberhawks", c1:"#0d2b1e", c2:"#37c98a"},
+  {id:"SBS", city:"Sable Bay",      mascot:"Serpents",    c1:"#0b1a2e", c2:"#3ddc97"},
+  {id:"CPC", city:"Crescent Point", mascot:"Cougars",     c1:"#2e1a3a", c2:"#c98bff"},
+  {id:"HLF", city:"Highland",       mascot:"Forge",       c1:"#331a0a", c2:"#ff9e2c"},
+  {id:"DBR", city:"Dustbowl",       mascot:"Rattlers",    c1:"#2b2408", c2:"#e0c94a"},
+  {id:"FRB", city:"Frontier",       mascot:"Bison",       c1:"#241a10", c2:"#c9a06a"},
+  {id:"SHA", city:"Steel Harbor",   mascot:"Anchors",     c1:"#101c2b", c2:"#7d97b8"},
+  {id:"SVF", city:"Sundown Valley", mascot:"Flares",      c1:"#3a0f28", c2:"#ff5c9d"},
+  {id:"BRV", city:"Blackridge",     mascot:"Vultures",    c1:"#181818", c2:"#9a9a9a"},
+];
+
+const POSITIONS = [
+  {p:"QB", w:2}, {p:"RB", w:3}, {p:"WR", w:4}, {p:"TE", w:2},
+  {p:"OL", w:3}, {p:"DL", w:3}, {p:"LB", w:2}, {p:"CB", w:3}, {p:"S", w:2}, {p:"K", w:1},
+];
+function weightedPos(rng){
+  const total = POSITIONS.reduce((s,p)=>s+p.w,0);
+  let r = rng()*total;
+  for(const p of POSITIONS){ if(r<p.w) return p.p; r-=p.w; }
+  return "WR";
+}
+
+const FIRST = ["Marcus","Dante","Cole","Jaylen","Trent","Rico","Andre","Silas","Malik","Owen","Kellen","Tobias","Quinn","Reese","Damon","Julian","Corey","Wade","Trey","Xavier","Beau","Miles","Jared","Deshawn","Isaiah","Grant","Kobe","Tucker","Roman","Elias","Nasir","Hollis","Duke","Emmett","Sonny","Zeke","Braylon","Jace","Kingston","Amir"];
+const LAST = ["Kessler","Vance","Dubois","Okafor","Renner","Castillo","Whitfield","Brackett","Solano","Marsh","Hendrix","Calloway","Prescott","Nakamura","Torres","Halloway","Ferris","Boykin","Sabatino","Crane","Delgado","Winslow","Ashworth","Monroe","Fontaine","Guerrero","Blackwood","Sterling","Navarro","Quinlan","Rourke","Everhart","Castro","Landry","Bellweather","Osei","Rhames","Voss","Tanaka","Killebrew"];
+
+function makeName(rng){ return pick(rng,FIRST)+" "+pick(rng,LAST); }
+
+/* Generate 300 cards, 25 per team, sequential numbering by team block */
+const CARDS = [];
+(function buildSet(){
+  let num = 1;
+  TEAMS.forEach(team=>{
+    for(let i=0;i<25;i++){
+      const isRookie = setRng() < 0.16;
+      const pos = weightedPos(setRng);
+      CARDS.push({
+        num, team: team.id,
+        name: makeName(setRng),
+        pos: pos,
+        ovr: randInt(setRng, 61, 96),
+        rookie: isRookie,
+        jersey: randInt(setRng, 1, 99),
+        seedA: Math.floor(setRng()*360), // rotation / build variance
+        seedB: poseForPosition(pos, setRng),
+        flip: setRng() < 0.5,
+        build: 0.9 + setRng()*0.24, // slight body-proportion variance
+      });
+      num++;
+    }
+  });
+})();
+function poseForPosition(pos, rng){
+  // map position to a pose family, with a little randomness so not every WR looks identical
+  const families = {
+    QB:[0], RB:[3,0], WR:[1,3], TE:[1,2], OL:[2], DL:[2,3], LB:[3,2], CB:[1,3], S:[3,1], K:[4],
+  };
+  const opts = families[pos] || [0,1,2,3];
+  return pick(rng, opts);
+}
+function teamOf(id){ return TEAMS.find(t=>t.id===id); }
+function cardByNum(n){ return CARDS.find(c=>c.num===n); }
+
+/* ============================================================
+   RARITY TIERS
+   ============================================================ */
+const RARITY = {
+  base:    {key:"base",    label:"Base",             cls:"",              color:"var(--r-common)", numbered:false},
+  holo:    {key:"holo",    label:"Ignition Holo",    cls:"rare-holo",     color:"var(--r-holo)",   numbered:false},
+  prism:   {key:"prism",   label:"Prism Parallel",   cls:"rare-prism",    color:"var(--r-prism)",  numbered:true, run:99},
+  chrome:  {key:"chrome",  label:"Chrome Parallel",  cls:"rare-chrome",   color:"var(--r-chrome)", numbered:true, run:25},
+  vertex:  {key:"vertex",  label:"Vertex Parallel",  cls:"rare-vertex",   color:"var(--r-vertex)", numbered:true, run:10},
+  radiant: {key:"radiant", label:"Radiant 1/1",      cls:"rare-radiant",  color:"var(--r-radiant)",numbered:true, run:1},
+  insert:  {key:"insert",  label:"Ignition Rookies", cls:"rare-insert",   color:"var(--r-insert)", numbered:true, run:250},
+};
+
+/* ============================================================
+   PRODUCTS — real-world box/case structure, original branding
+   ============================================================ */
+const PRODUCTS = {
+  value:   {key:"value",   name:"Value Pack",       cpp:6, ppb:1,  price:14,  cls:"ptype-value",
+            odds:{base:.72, holo:.22, prism:.05, chrome:.008, vertex:0, radiant:0}, hitSlots:0, insertOdds:.010},
+  blaster: {key:"blaster", name:"Blaster Box",      cpp:4, ppb:6,  price:32,  cls:"ptype-blaster",
+            odds:{base:.68, holo:.24, prism:.065, chrome:.013, vertex:.002, radiant:0}, hitSlots:0, insertOdds:.018},
+  h2:      {key:"h2",      name:"H2 Box",           cpp:4, ppb:8,  price:38,  cls:"ptype-h2",
+            odds:{base:.65, holo:.25, prism:.08, chrome:.016, vertex:.003, radiant:.001}, hitSlots:0, insertOdds:.022},
+  jumbo:   {key:"jumbo",   name:"Jumbo Pack",       cpp:12, ppb:1, price:40,  cls:"ptype-jumbo",
+            odds:{base:.60, holo:.28, prism:.09, chrome:.024, vertex:.005, radiant:.001}, hitSlots:0, insertOdds:.028},
+  mega:    {key:"mega",    name:"Mega Box",         cpp:6, ppb:7,  price:46,  cls:"ptype-mega",
+            odds:{base:.62, holo:.27, prism:.08, chrome:.025, vertex:.004, radiant:.001}, hitSlots:1, insertOdds:.032},
+  choice:  {key:"choice",  name:"Choice Box",       cpp:8, ppb:1,  price:65,  cls:"ptype-choice",
+            odds:{base:.50, holo:.30, prism:.14, chrome:.045, vertex:.013, radiant:.002}, hitSlots:1, insertOdds:.045},
+  tin:     {key:"tin",     name:"Collector Tin",    cpp:5, ppb:3,  price:78,  cls:"ptype-tin",
+            odds:{base:.46, holo:.30, prism:.155, chrome:.06, vertex:.02, radiant:.005}, hitSlots:1, insertOdds:.055},
+  hobby:   {key:"hobby",   name:"Hobby Box",        cpp:4, ppb:20, price:180, cls:"ptype-hobby",
+            odds:{base:.55, holo:.28, prism:.11, chrome:.045, vertex:.013, radiant:.002}, hitSlots:1, insertOdds:.040},
+  fotl:    {key:"fotl",    name:"First Off The Line", cpp:4, ppb:20, price:230, cls:"ptype-fotl",
+            odds:{base:.42, holo:.32, prism:.17, chrome:.06, vertex:.024, radiant:.006}, hitSlots:1, insertOdds:.065},
+  vault:   {key:"vault",   name:"Vault Box",        cpp:3, ppb:5,  price:340, cls:"ptype-vault",
+            odds:{base:.18, holo:.30, prism:.28, chrome:.15, vertex:.065, radiant:.025}, hitSlots:1, insertOdds:.110},
+};
+const BOXES_PER_CASE = {value:24, blaster:20, h2:20, jumbo:16, mega:20, choice:20, tin:16, hobby:12, fotl:12, vault:10};
+const CASE_DISCOUNT = 0.9; // 10% off buying a full case at once
+
+function rollRarity(odds, rng){
+  let r = rng();
+  let acc = 0;
+  const order = ["radiant","vertex","chrome","prism","holo","base"]; // rarest checked first band, but weighted by prob below
+  // build cumulative from rarest to keep low-prob tiers meaningful
+  const entries = Object.entries(odds);
+  acc = 0;
+  for(const [k,p] of entries){ acc += p; if(r <= acc) return k; }
+  return "base";
+}
+function rollWeighted(weights, rng){
+  const r = rng();
+  let acc = 0;
+  for(const [k,p] of Object.entries(weights)){ acc += p; if(r <= acc) return k; }
+  return Object.keys(weights)[0];
+}
+
+/* ============================================================
+   PITY SYSTEM — guarantees a Chrome-or-better within N packs
+   ============================================================ */
+const PITY_THRESHOLD = 30;
+const PITY_UPGRADE_ODDS = {chrome:.75, vertex:.22, radiant:.03};
+
+/* ============================================================
+   INSERT SET — "Ignition Rookies", a curated rookie subset
+   ============================================================ */
+const INSERT_POOL = CARDS.filter(c=>c.rookie).slice(0,18);
+
+/* ============================================================
+   PACK GENERATION — shared by single-box opening and case breaks
+   ============================================================ */
+function generatePack(prod){
+  const cards = [];
+  for(let c=0;c<prod.cpp;c++){
+    const num = randInt(Math.random, 1, 300);
+    const rarity = rollRarity(prod.odds, Math.random);
+    cards.push({num, rarity});
+  }
+  // pity check
+  const bestRank = Math.max(...cards.map(c=>RARITY_RANK[c.rarity]));
+  if(bestRank >= RARITY_RANK.chrome){
+    state.pityCounter = 0;
+  } else {
+    state.pityCounter = (state.pityCounter||0) + 1;
+    if(state.pityCounter >= PITY_THRESHOLD){
+      cards[cards.length-1].rarity = rollWeighted(PITY_UPGRADE_ODDS, Math.random);
+      state.pityCounter = 0;
+    }
+  }
+  // insert check — replaces the last slot with a curated rookie insert
+  if(INSERT_POOL.length && Math.random() < (prod.insertOdds||0)){
+    const insertCard = pick(Math.random, INSERT_POOL);
+    cards[cards.length-1] = {num: insertCard.num, rarity:"insert"};
+  }
+  // finalize serials
+  return cards.map(c=>{
+    const r = RARITY[c.rarity];
+    const serial = r.numbered ? randInt(Math.random, 1, r.run) : 0;
+    return {num:c.num, rarity:c.rarity, serial};
+  });
+}
+function generatePacks(prod, count){
+  const packs = [];
+  for(let i=0;i<count;i++) packs.push(generatePack(prod));
+  return packs;
+}
+
+/* ============================================================
+   STATE + PERSISTENCE
+   ============================================================ */
+const SAVE_KEY = "prismRushSave_v1";
+let state = {
+  coins: 500,
+  collection: {}, // "num|rarity|serial" -> count  (serial 0 = not numbered)
+  lastDaily: 0,
+  totalOpened: 0,
+  bountyDay: "",
+  bountyIds: [],
+  bountyClaimed: [false,false,false],
+  dailyProgress: {packs:0, newcards:0, sold:0, bestRarityRank:-1},
+  milestonesClaimed: [],
+  pityCounter: 0,
+  teamsCompleted: [],
+  wishlist: [],
+  wildcards: 0,
+  graded: {},
+  boxesOpened: 0,
+  casesOpened: 0,
+  totalSpent: 0,
+  achievementsUnlocked: [],
+  fastOpen: false,
+  wildcardsEverMade: 0,
+};
+function loadState(){
+  try{
+    const raw = localStorage.getItem(SAVE_KEY);
+    if(raw){ state = Object.assign(state, JSON.parse(raw)); }
+  }catch(e){}
+}
+function saveState(){
+  try{ localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }catch(e){}
+}
+function addCard(num, rarity, serial){
+  const key = num+"|"+rarity+(serial?("|"+serial):"");
+  state.collection[key] = (state.collection[key]||0)+1;
+  return (state.collection[key]===1);
+}
+function ownsNum(num){
+  return Object.keys(state.collection).some(k=>k.startsWith(num+"|"));
+}
+function uniqueCount(){
+  const nums = new Set();
+  Object.keys(state.collection).forEach(k=>nums.add(k.split("|")[0]));
+  return nums.size;
+}
+
+/* ============================================================
+   ECONOMY — sell values, bounties, milestone ladder
+   ============================================================ */
+const SELL_VALUE = {base:2, holo:5, prism:14, chrome:35, vertex:90, radiant:300, insert:45};
+const RARITY_RANK = {base:0, holo:1, prism:2, chrome:3, vertex:4, radiant:5, insert:3};
+
+function sellCard(num, rarity, serial, qty){
+  const key = num+"|"+rarity+(serial?("|"+serial):"");
+  const count = state.collection[key]||0;
+  const sellable = Math.max(0, count-1); // always keep at least 1 copy
+  const sellQty = Math.min(qty, sellable);
+  if(sellQty<=0) return 0;
+  const payout = SELL_VALUE[rarity]*sellQty;
+  state.collection[key] -= sellQty;
+  state.coins += payout;
+  state.dailyProgress.sold += sellQty;
+  checkBountyRefresh();
+  saveState();
+  updateWallet();
+  return payout;
+}
+function sellAllDupes(){
+  let total = 0, cardsCount = 0;
+  Object.keys(state.collection).forEach(key=>{
+    const count = state.collection[key];
+    if(count>1){
+      const rarity = key.split("|")[1];
+      const sellQty = count-1;
+      total += SELL_VALUE[rarity]*sellQty;
+      cardsCount += sellQty;
+      state.collection[key] = 1;
+    }
+  });
+  if(total>0){
+    state.coins += total;
+    state.dailyProgress.sold += cardsCount;
+    checkBountyRefresh();
+    saveState();
+    updateWallet();
+  }
+  return {total, cardsCount};
+}
+
+const BOUNTY_POOL = [
+  {id:"open3",     desc:"Open 3 packs today",             target:3,  type:"packs",    reward:40},
+  {id:"open6",     desc:"Open 6 packs today",             target:6,  type:"packs",    reward:80},
+  {id:"open10",    desc:"Open 10 packs today",            target:10, type:"packs",    reward:130},
+  {id:"holoplus",  desc:"Pull a Holo-or-better card",     target:1,  type:"rarity",   minRank:"holo",   reward:35},
+  {id:"prismplus", desc:"Pull a Prism-or-better card",    target:1,  type:"rarity",   minRank:"prism",  reward:70},
+  {id:"chromeplus",desc:"Pull a Chrome-or-better card",   target:1,  type:"rarity",   minRank:"chrome", reward:150},
+  {id:"new4",      desc:"Add 4 new cards to your binder", target:4,  type:"newcards", reward:50},
+  {id:"new10",     desc:"Add 10 new cards to your binder",target:10, type:"newcards", reward:120},
+  {id:"sell3",     desc:"Sell 3 duplicate cards",         target:3,  type:"sold",     reward:30},
+];
+function dayKeyOf(date){ return date.toDateString(); }
+function dayNumberOf(date){ return Math.floor(date.getTime()/86400000); }
+function ensureBounties(){
+  const today = dayKeyOf(new Date());
+  if(state.bountyDay !== today){
+    const rng = mulberry32(dayNumberOf(new Date())*7919 + 13);
+    const pool = [...BOUNTY_POOL];
+    const picked = [];
+    while(picked.length<3 && pool.length){
+      const idx = Math.floor(rng()*pool.length);
+      picked.push(pool.splice(idx,1)[0].id);
+    }
+    state.bountyDay = today;
+    state.bountyIds = picked;
+    state.bountyClaimed = [false,false,false];
+    state.dailyProgress = {packs:0, newcards:0, sold:0, bestRarityRank:-1};
+    saveState();
+  }
+}
+function checkBountyRefresh(){ ensureBounties(); }
+function bountyProgressValue(b){
+  if(b.type==="packs") return state.dailyProgress.packs;
+  if(b.type==="newcards") return state.dailyProgress.newcards;
+  if(b.type==="sold") return state.dailyProgress.sold;
+  if(b.type==="rarity") return state.dailyProgress.bestRarityRank >= RARITY_RANK[b.minRank] ? 1 : 0;
+  return 0;
+}
+
+const MILESTONES = [
+  {count:25,  reward:60},
+  {count:50,  reward:100},
+  {count:75,  reward:150},
+  {count:100, reward:220},
+  {count:150, reward:320},
+  {count:200, reward:450},
+  {count:250, reward:600},
+  {count:300, reward:1000},
+];
+
+/* ============================================================
+   TEAM COMPLETION BONUS
+   Completing a team's 25-card set rewards one bonus card drawn
+   from the top three tiers (Chrome / Vertex / Radiant). The odds
+   between those three scale with how strong your existing team
+   collection already is — better cards on the shelf, better shot
+   at the top-end bonus.
+   ============================================================ */
+function teamQualityScore(teamId){
+  const teamCards = CARDS.filter(c=>c.team===teamId);
+  let rankSum = 0;
+  teamCards.forEach(c=>{
+    const keys = Object.keys(state.collection).filter(k=>Number(k.split("|")[0])===c.num);
+    if(keys.length===0) return;
+    const best = Math.max(...keys.map(k=>RARITY_RANK[k.split("|")[1]]));
+    rankSum += best;
+  });
+  return rankSum / teamCards.length; // 0 (all base) .. 5 (all radiant)
+}
+function checkTeamCompletion(teamId){
+  if(state.teamsCompleted.includes(teamId)) return null;
+  const teamCards = CARDS.filter(c=>c.team===teamId);
+  const ownedNums = new Set(Object.keys(state.collection).map(k=>Number(k.split("|")[0])));
+  const complete = teamCards.every(c=>ownedNums.has(c.num));
+  if(!complete) return null;
+
+  state.teamsCompleted.push(teamId);
+  const quality = teamQualityScore(teamId); // 0..5
+  const radiantW = Math.min(0.20, 0.02 + (quality/5)*0.18);
+  const vertexW  = Math.min(0.50, 0.16 + (quality/5)*0.34);
+  const chromeW  = Math.max(0.01, 1 - radiantW - vertexW);
+  const bonusRarity = rollWeighted({chrome:chromeW, vertex:vertexW, radiant:radiantW}, Math.random);
+  const bonusCardDef = pick(Math.random, teamCards);
+  const r = RARITY[bonusRarity];
+  const serial = randInt(Math.random, 1, r.run);
+  addCard(bonusCardDef.num, bonusRarity, serial);
+  saveState();
+  return {teamId, num:bonusCardDef.num, rarity:bonusRarity, serial, quality};
+}
+function showTeamBonusModal(bonus, onClose){
+  const team = teamOf(bonus.teamId);
+  const overlay = document.getElementById("cardModalOverlay");
+  const body = document.getElementById("cardModalBody");
+  body.innerHTML = "";
+  const feature = document.createElement("div");
+  feature.className = "card-modal-feature";
+  feature.appendChild(buildCardDOM(bonus.num, bonus.rarity, bonus.serial));
+  body.appendChild(feature);
+  const info = document.createElement("div");
+  info.className = "card-modal-info";
+  info.innerHTML = `
+    <div class="cmi-name" style="color:var(--gold);">Team Complete!</div>
+    <div class="cmi-meta">You've collected every card for the ${team.city} ${team.mascot}.</div>
+    <div class="cmi-sub">Bonus reward</div>
+    <div class="cmi-rows">
+      <div class="cmi-row">
+        <span class="cmi-dot" style="background:${RARITY[bonus.rarity].color}"></span>
+        <span class="cmi-rlabel" style="color:${RARITY[bonus.rarity].color}">${RARITY[bonus.rarity].label}</span>
+        <span class="cmi-rserial">#${bonus.serial}/${RARITY[bonus.rarity].run}</span>
+      </div>
+    </div>
+  `;
+  body.appendChild(info);
+  overlay.classList.add("open");
+  sfxFlip(bonus.rarity);
+  toast(`${team.city} ${team.mascot} complete — bonus ${RARITY[bonus.rarity].label} awarded`);
+  const closeBtn = document.getElementById("cardModalClose");
+  const handler = ()=>{
+    overlay.classList.remove("open");
+    closeBtn.removeEventListener("click", handler);
+    if(pendingTeamBonuses.length){
+      showTeamBonusModal(pendingTeamBonuses.shift(), onClose);
+    } else if(onClose){
+      onClose();
+    }
+  };
+  closeBtn.addEventListener("click", handler);
+}
+
+/* ============================================================
+   WILDCARDS — melt 5 duplicates into 1 token, redeem for any
+   specific missing base card
+   ============================================================ */
+const WILDCARD_MELT_COST = 5;
+function availableDupeUnits(){
+  return Object.values(state.collection).reduce((s,c)=>s+Math.max(0,c-1), 0);
+}
+function meltDupesToWildcard(){
+  if(availableDupeUnits() < WILDCARD_MELT_COST) return false;
+  let toRemove = WILDCARD_MELT_COST;
+  const keys = Object.keys(state.collection).sort((a,b)=>{
+    return RARITY_RANK[a.split("|")[1]] - RARITY_RANK[b.split("|")[1]]; // consume cheapest dupes first
+  });
+  for(const k of keys){
+    if(toRemove<=0) break;
+    const spare = Math.max(0, state.collection[k]-1);
+    const take = Math.min(spare, toRemove);
+    state.collection[k] -= take;
+    toRemove -= take;
+  }
+  state.wildcards++;
+  state.wildcardsEverMade = (state.wildcardsEverMade||0)+1;
+  saveState();
+  checkAchievements();
+  return true;
+}
+function redeemWildcard(num){
+  if(state.wildcards<=0) return false;
+  if(ownsNum(num)) return false;
+  state.wildcards--;
+  addCard(num, "base", 0);
+  saveState();
+  return true;
+}
+
+/* ============================================================
+   GRADING — cosmetic slab grading for Chrome-or-better pulls
+   ============================================================ */
+const GRADING_COST = 25;
+function rollGrade(){
+  const r = Math.random();
+  if(r<0.45) return "10";
+  if(r<0.75) return "9.5";
+  if(r<0.90) return "9";
+  if(r<0.97) return "8.5";
+  return "8";
+}
+function submitForGrading(key){
+  if(state.coins < GRADING_COST) return null;
+  if(state.graded[key]) return state.graded[key];
+  state.coins -= GRADING_COST;
+  state.totalSpent += GRADING_COST;
+  const grade = rollGrade();
+  state.graded[key] = grade;
+  saveState();
+  checkAchievements();
+  return grade;
+}
+
+/* ============================================================
+   ACHIEVEMENTS — one-off badges, auto-unlocked and paid out
+   ============================================================ */
+const ACHIEVEMENTS = [
+  {id:"first_holo",    name:"First Shine",       desc:"Pull your first Ignition Holo or better.",
+    reward:15, check:()=> Object.keys(state.collection).some(k=>RARITY_RANK[k.split("|")[1]]>=1)},
+  {id:"first_chrome",  name:"Chrome Debut",       desc:"Pull your first Chrome Parallel or better.",
+    reward:40, check:()=> Object.keys(state.collection).some(k=>RARITY_RANK[k.split("|")[1]]>=3)},
+  {id:"first_vertex",  name:"Vertex Hunter",      desc:"Pull your first Vertex Parallel or better.",
+    reward:90, check:()=> Object.keys(state.collection).some(k=>RARITY_RANK[k.split("|")[1]]>=4)},
+  {id:"first_radiant", name:"One of One",         desc:"Pull a Radiant 1/1.",
+    reward:250, check:()=> Object.keys(state.collection).some(k=>k.split("|")[1]==="radiant")},
+  {id:"first_insert",  name:"Ignition Rookie",    desc:"Pull an Ignition Rookies insert.",
+    reward:60, check:()=> Object.keys(state.collection).some(k=>k.split("|")[1]==="insert")},
+  {id:"boxes_10",      name:"Regular Customer",   desc:"Open 10 boxes.",
+    reward:50, check:()=> state.boxesOpened>=10},
+  {id:"boxes_50",      name:"Case Runner",        desc:"Open 50 boxes.",
+    reward:180, check:()=> state.boxesOpened>=50},
+  {id:"case_break",    name:"Case Cracker",       desc:"Break a full case in one go.",
+    reward:120, check:()=> state.casesOpened>=1},
+  {id:"team_1",        name:"Team Player",        desc:"Complete your first full team set.",
+    reward:80, check:()=> state.teamsCompleted.length>=1},
+  {id:"team_12",       name:"League Champion",    desc:"Complete all 12 team sets.",
+    reward:800, check:()=> state.teamsCompleted.length>=12},
+  {id:"wildcard_made", name:"Wildcard Ready",     desc:"Melt duplicates into your first wildcard.",
+    reward:20, check:()=> state.wildcardsEverMade>=1},
+  {id:"graded_1",      name:"Slabbed",            desc:"Submit a card for grading.",
+    reward:25, check:()=> Object.keys(state.graded).length>=1},
+  {id:"spender_1000",  name:"Big Spender",        desc:"Spend 1,000 Prism Coins total.",
+    reward:100, check:()=> state.totalSpent>=1000},
+  {id:"collector_300", name:"Master Set",         desc:"Own all 300 base cards.",
+    reward:500, check:()=> uniqueCount()>=300},
+];
+function checkAchievements(){
+  let unlockedAny = false;
+  ACHIEVEMENTS.forEach(a=>{
+    if(state.achievementsUnlocked.includes(a.id)) return;
+    if(a.check()){
+      state.achievementsUnlocked.push(a.id);
+      state.coins += a.reward;
+      unlockedAny = true;
+      toast(`Achievement unlocked: ${a.name} (+${a.reward})`);
+    }
+  });
+  if(unlockedAny){ saveState(); updateWallet(); }
+}
+
+/* ============================================================
+   AUDIO — light WebAudio blips
+   ============================================================ */
+let actx;
+function ac(){ if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)(); return actx; }
+function blip(freq, dur, type, gain){
+  try{
+    const c = ac();
+    const o = c.createOscillator(); const g = c.createGain();
+    o.type = type||"sine"; o.frequency.value = freq;
+    g.gain.value = 0;
+    o.connect(g); g.connect(c.destination);
+    const t = c.currentTime;
+    g.gain.linearRampToValueAtTime(gain||.05, t+.01);
+    g.gain.exponentialRampToValueAtTime(.0001, t+dur);
+    o.start(t); o.stop(t+dur+.02);
+  }catch(e){}
+}
+function sfxTear(){ blip(180,.18,"sawtooth",.05); blip(340,.12,"square",.03); }
+function sfxFlip(rarity){
+  const map = {base:520, holo:660, prism:760, chrome:880, vertex:1040, radiant:1300};
+  blip(map[rarity]||520, .22, rarity==="radiant"?"sawtooth":"triangle", rarity==="base"?.04:.07);
+  if(rarity==="radiant" || rarity==="vertex"){ setTimeout(()=>blip((map[rarity])*1.5,.3,"sine",.05), 90); }
+}
+function sfxCoin(){ blip(900,.08,"square",.04); setTimeout(()=>blip(1200,.08,"square",.03),60); }
+
+/* ============================================================
+   TOASTS + MODAL
+   ============================================================ */
+function toast(msg){
+  const root = document.getElementById("toastRoot");
+  const t = document.createElement("div");
+  t.className = "toast"; t.textContent = msg;
+  root.appendChild(t);
+  setTimeout(()=>{ t.style.opacity="0"; t.style.transition="opacity .3s"; setTimeout(()=>t.remove(),300); }, 2600);
+}
+function showModal(title, body){
+  document.getElementById("modalTitle").textContent = title;
+  document.getElementById("modalBody").textContent = body;
+  document.getElementById("modalOverlay").classList.add("open");
+}
+document.getElementById("modalClose").addEventListener("click", ()=>{
+  document.getElementById("modalOverlay").classList.remove("open");
+});
+
+/* ============================================================
+   PLAYER FIGURES — original illustrated athlete pictograms
+   (helmet + torso + limbs built from geometry; no real people,
+   no real team marks — every figure is procedurally posed)
+   ============================================================ */
+const POSE_LIB = [
+  // 0: throwing (QB)
+  { head:[135,108], torso:[[135,140],[133,206]],
+    arms:[[[121,146],[97,158],[76,138]], [[149,146],[166,176],[151,197]]],
+    legs:[[[133,206],[114,250],[104,296]], [[133,206],[156,255],[171,299]]] },
+  // 1: catching / reaching (WR / TE / CB)
+  { head:[151,92], torso:[[151,124],[141,190]],
+    arms:[[[136,129],[116,99],[95,68]], [[164,129],[186,100],[206,74]]],
+    legs:[[[141,190],[121,240],[101,291]], [[141,190],[156,246],[167,297]]] },
+  // 2: blocking stance (OL / DL)
+  { head:[130,128], torso:[[130,154],[130,216]],
+    arms:[[[109,159],[84,180],[63,186]], [[151,159],[176,180],[197,186]]],
+    legs:[[[130,216],[104,256],[93,301]], [[130,216],[156,256],[167,301]]] },
+  // 3: tackle lunge (LB / S / RB / DL)
+  { head:[119,138], torso:[[124,164],[141,216]],
+    arms:[[[109,169],[84,190],[63,206]], [[139,169],[160,149],[176,128]]],
+    legs:[[[141,216],[110,246],[79,271]], [[141,216],[166,261],[192,301]]] },
+  // 4: kicking (K)
+  { head:[129,98], torso:[[130,128],[135,190]],
+    arms:[[[115,133],[95,149],[79,165]], [[150,133],[171,144],[191,150]]],
+    legs:[[[135,190],[141,240],[146,292]], [[130,190],[161,209],[202,188]]] },
+];
+
+function shade(hex, pct){
+  const f = parseInt(hex.slice(1),16);
+  const t = pct<0 ? 0 : 255;
+  const p = Math.abs(pct);
+  const R = f>>16, G = (f>>8)&0x00FF, B = f&0x0000FF;
+  const nr = Math.round((t-R)*p)+R, ng = Math.round((t-G)*p)+G, nb = Math.round((t-B)*p)+B;
+  return "#"+(0x1000000 + nr*0x10000 + ng*0x100 + nb).toString(16).slice(1);
+}
+
+function buildFigureSVG(card, idBase, team){
+  const pose = POSE_LIB[card.seedB % POSE_LIB.length];
+  const b = card.build;
+  const flip = card.flip;
+  const cx = 130;
+  const mx = (x)=> flip ? (cx - (x-cx)) : x;
+  const originY = pose.head[1];
+  const sc = (pt)=> [ cx + (mx(pt[0]) - cx) * b, originY + (pt[1]-originY) * b ];
+
+  const head = sc(pose.head);
+  const torso = pose.torso.map(sc);
+  const arms = pose.arms.map(seg=>seg.map(sc));
+  const legs = pose.legs.map(seg=>seg.map(sc));
+
+  const limbW = 15*b, jointR = limbW*0.5, headR = 15*b;
+
+  const jerseyLight = team.c2, jerseyDark = shade(team.c2, -0.42);
+  const pantsLight = shade(team.c1, 0.22), pantsDark = shade(team.c1, -0.38);
+  const helmetMid = shade(team.c1, -0.32), helmetDark = shade(team.c1, -0.62);
+
+  const gJersey = idBase+"j", gPants = idBase+"p", gHelmet = idBase+"h";
+
+  function limb(seg, w, grad){
+    return `<polyline points="${seg.map(p=>p[0]+","+p[1]).join(" ")}" fill="none" stroke="url(#${grad})" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  }
+  function joint(p, r, grad){ return `<circle cx="${p[0]}" cy="${p[1]}" r="${r}" fill="url(#${grad})"/>`; }
+  function glove(p){ return `<circle cx="${p[0]}" cy="${p[1]}" r="${limbW*0.4}" fill="#eef1f6" stroke="${jerseyDark}" stroke-width="1"/>`; }
+  function cleat(p){ return `<ellipse cx="${p[0]}" cy="${p[1]+2}" rx="${limbW*0.58}" ry="${limbW*0.32}" fill="${helmetDark}"/>`; }
+
+  const feetY = Math.max(legs[0][2][1], legs[1][2][1]);
+  const feetXAvg = (legs[0][2][0]+legs[1][2][0])/2;
+
+  const torsoTop = torso[0], torsoBot = torso[1];
+  const torsoW = 30*b;
+  const torsoX = torsoTop[0]-torsoW/2, torsoY = torsoTop[1]-6*b, torsoH = (torsoBot[1]-torsoTop[1])+16*b;
+
+  return `
+    <defs>
+      <linearGradient id="${gJersey}" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="${jerseyLight}"/>
+        <stop offset="100%" stop-color="${jerseyDark}"/>
+      </linearGradient>
+      <linearGradient id="${gPants}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${pantsLight}"/>
+        <stop offset="100%" stop-color="${pantsDark}"/>
+      </linearGradient>
+      <radialGradient id="${gHelmet}" cx="35%" cy="30%" r="75%">
+        <stop offset="0%" stop-color="${helmetMid}"/>
+        <stop offset="100%" stop-color="${helmetDark}"/>
+      </radialGradient>
+    </defs>
+    <g opacity="0.97" transform="rotate(${(card.seedA%8)-4} 130 200)">
+      <ellipse cx="${feetXAvg}" cy="${feetY+8}" rx="46" ry="9" fill="#000000" opacity="0.28"/>
+
+      ${limb(legs[1], limbW, gPants)}
+      ${limb(legs[0], limbW, gPants)}
+      ${cleat(legs[1][2])}
+      ${cleat(legs[0][2])}
+      ${joint(legs[1][1], jointR, gPants)}
+      ${joint(legs[0][1], jointR, gPants)}
+
+      ${limb(arms[1], limbW*0.8, gJersey)}
+      ${glove(arms[1][2])}
+      ${joint(arms[1][1], jointR*0.75, gJersey)}
+
+      <ellipse cx="${torsoX-1*b}" cy="${torsoTop[1]+3*b}" rx="${13*b}" ry="${9*b}" fill="url(#${gJersey})" stroke="${jerseyDark}" stroke-width="1"/>
+      <ellipse cx="${torsoX+torsoW+1*b}" cy="${torsoTop[1]+3*b}" rx="${13*b}" ry="${9*b}" fill="url(#${gJersey})" stroke="${jerseyDark}" stroke-width="1"/>
+      <rect x="${torsoX}" y="${torsoY}" width="${torsoW}" height="${torsoH}" rx="${11*b}" fill="url(#${gJersey})" stroke="${jerseyDark}" stroke-width="1.5"/>
+      <path d="M ${torsoTop[0]-8*b} ${torsoTop[1]-2*b} L ${torsoTop[0]} ${torsoTop[1]+7*b} L ${torsoTop[0]+8*b} ${torsoTop[1]-2*b} Z" fill="${pantsDark}" opacity="0.8"/>
+      <text x="${torsoTop[0]}" y="${(torsoTop[1]+torsoBot[1])/2+5*b}" text-anchor="middle" font-family="Oswald, sans-serif" font-weight="700"
+            font-size="${13*b}" fill="#ffffff" stroke="${jerseyDark}" stroke-width="0.5">${card.jersey}</text>
+
+      ${limb(arms[0], limbW*0.8, gJersey)}
+      ${glove(arms[0][2])}
+      ${joint(arms[0][1], jointR*0.75, gJersey)}
+
+      <circle cx="${head[0]}" cy="${head[1]}" r="${headR}" fill="url(#${gHelmet})" stroke="${helmetDark}" stroke-width="1.5"/>
+      <ellipse cx="${head[0]-headR*0.35}" cy="${head[1]-headR*0.4}" rx="${headR*0.4}" ry="${headR*0.24}" fill="#ffffff" opacity="0.28"/>
+      <rect x="${head[0]-2.2*b}" y="${head[1]-headR}" width="${4.4*b}" height="${headR*2}" fill="${team.c2}" opacity="0.9"/>
+      <g stroke="${helmetDark}" stroke-width="${1.8*b}" fill="none" opacity="0.85">
+        <path d="M ${head[0]-headR*0.6} ${head[1]+headR*0.25} Q ${head[0]} ${head[1]+headR*0.6} ${head[0]+headR*0.6} ${head[1]+headR*0.25}"/>
+        <path d="M ${head[0]-headR*0.55} ${head[1]+headR*0.55} Q ${head[0]} ${head[1]+headR*0.85} ${head[0]+headR*0.55} ${head[1]+headR*0.55}"/>
+      </g>
+      <circle cx="${head[0]-headR*0.85}" cy="${head[1]+headR*0.1}" r="${2*b}" fill="${helmetDark}"/>
+    </g>
+    <g opacity="0.1" stroke="#ffffff" stroke-width="1.5">
+      <line x1="0" y1="55" x2="260" y2="55"/>
+      <line x1="0" y1="235" x2="260" y2="235"/>
+    </g>
+  `;
+}
+
+/* ============================================================
+   CARD RENDER
+   ============================================================ */
+function buildCardDOM(num, rarity, serial, opts){
+  opts = opts||{};
+  const card = cardByNum(num);
+  const team = teamOf(card.team);
+  const r = RARITY[rarity];
+
+  const badges = [];
+  if(rarity==="insert") badges.push({bg:"var(--r-insert)", fg:"#04140b", text:"Ignition Insert"});
+  if(card.rookie && rarity!=="insert") badges.push({bg:"var(--good)", fg:"#04140b", text:"Rated Rookie"});
+  if(opts.graded) badges.push({bg:"linear-gradient(120deg,#fff,#c7cfda)", fg:"#0a0c10", text:"Graded "+opts.graded});
+  const badgeHTML = badges.map((b,i)=>`<div class="tcard-badge" style="top:${12+i*22}px; background:${b.bg}; color:${b.fg};">${b.text}</div>`).join("");
+
+  const el = document.createElement("div");
+  el.className = "tcard " + r.cls;
+  el.innerHTML = `
+    <div class="tcard-inner">
+      <div class="tcard-art" style="background:
+        radial-gradient(120% 100% at 15% 0%, ${team.c2}55, transparent 55%),
+        linear-gradient(150deg, ${team.c1}, #05060a 88%);"></div>
+      <svg class="tcard-silhouette" viewBox="0 0 260 320" preserveAspectRatio="xMidYMax slice">
+        ${buildFigureSVG(card, "fig"+num+"_"+rarity+"_"+(serial||0), team)}
+      </svg>
+      <div class="tcard-frame"></div>
+      <div class="tcard-topbar">
+        <div class="tcard-team">${team.city}<br>${team.mascot}</div>
+        <div class="tcard-pos">${card.pos}</div>
+      </div>
+      <div class="tcard-rating">${card.ovr}<small>OVR</small></div>
+      ${badgeHTML}
+      <div class="tcard-name">${card.name}<span style="--r-glow:${r.color}; color:${r.color};">${r.label}</span></div>
+      <div class="tcard-num">NO. ${String(num).padStart(3,"0")} / 300</div>
+      ${serial ? `<div class="tcard-serial">${serial} / ${r.run}</div>` : ''}
+      <div class="tcard-holo"></div>
+      <div class="tcard-glint"></div>
+    </div>
+  `;
+  // tilt + glint interaction
+  el.addEventListener("pointermove", (e)=>{
+    const rect = el.getBoundingClientRect();
+    const px = (e.clientX-rect.left)/rect.width;
+    const py = (e.clientY-rect.top)/rect.height;
+    const rx = (py-0.5)*-14;
+    const ry = (px-0.5)*14;
+    el.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+    const glint = el.querySelector(".tcard-glint");
+    glint.style.setProperty("--gx", (px*100)+"%");
+    glint.style.setProperty("--gy", (py*100)+"%");
+    glint.style.opacity = .8;
+    const holo = el.querySelector(".tcard-holo");
+    holo.style.backgroundPosition = `${px*100}% ${py*100}%`;
+  });
+  el.addEventListener("pointerleave", ()=>{
+    el.style.transform = "rotateX(0) rotateY(0)";
+    el.querySelector(".tcard-glint").style.opacity = 0;
+  });
+  return el;
+}
+
+/* ============================================================
+   VIEW SWITCHING
+   ============================================================ */
+const views = ["shop","rip","odds","rewards","trophy","binder","checklist","achievements"];
+function showView(name){
+  views.forEach(v=>{
+    document.getElementById("view-"+v).classList.toggle("active", v===name);
+  });
+  document.querySelectorAll("nav.tabs button").forEach(b=>{
+    b.classList.toggle("active", b.dataset.view===name);
+  });
+  if(name==="binder") renderBinder();
+  if(name==="checklist") renderChecklist();
+  if(name==="odds") renderOddsBoard();
+  if(name==="rewards") renderRewards();
+  if(name==="trophy") renderTrophyCase();
+  if(name==="achievements") renderAchievements();
+  if(name==="shop") updateHeroStats();
+}
+document.querySelectorAll("nav.tabs button").forEach(b=>{
+  b.addEventListener("click", ()=>showView(b.dataset.view));
+});
+
+/* ============================================================
+   SHOP RENDER
+   ============================================================ */
+const PRODUCT_TAGLINE = {
+  value:   "Cheapest way in — one pack, low risk.",
+  blaster: "Retail staple. Good odds at a fair price.",
+  h2:      "Hybrid retail format, tighter print runs.",
+  jumbo:   "One oversized pack, more swings per buy.",
+  mega:    "Bigger single-pack pull, guaranteed hit.",
+  choice:  "One loaded pack, best odds outside Vault.",
+  tin:     "Collector tin, guaranteed Prism-or-better.",
+  hobby:   "The core release. Full case-break format.",
+  fotl:    "First off the line — best hobby odds.",
+  vault:   "Ultra-premium. Every pack hits Prism+.",
+};
+
+function renderShop(){
+  const grid = document.getElementById("productGrid");
+  grid.innerHTML = "";
+  Object.values(PRODUCTS).forEach(prod=>{
+    const boxes = BOXES_PER_CASE[prod.key];
+    const casePrice = Math.round(prod.price * boxes * CASE_DISCOUNT);
+    const div = document.createElement("div");
+    div.className = "product-card" + (prod.key==="vault" ? " is-vault" : "");
+    div.innerHTML = `
+      <div class="product-box ${prod.cls}"><div class="glare"></div><span>${prod.name}</span>${prod.key==="vault" ? '<span class="vault-tag">Premium</span>' : ''}</div>
+      <div class="product-name">${prod.name}</div>
+      <div class="product-tagline">${PRODUCT_TAGLINE[prod.key]||""}</div>
+      <div class="product-meta">
+        <b>${prod.cpp}</b> cards / pack &middot; <b>${prod.ppb}</b> pack${prod.ppb>1?"s":""} / box<br>
+        <b>${boxes}</b> boxes / case ${prod.hitSlots ? '&middot; <span style="color:var(--r-chrome)">guaranteed hit</span>' : ''}
+      </div>
+      <div class="product-buy">
+        <div class="price"><div class="coin-ic" style="width:14px;height:14px;"></div>${prod.price}</div>
+        <div style="display:flex; gap:8px;">
+          <button class="ghost-btn" style="padding:8px 12px; font-size:11.5px;" data-odds="${prod.key}">Odds</button>
+          <button class="buy-btn" data-prod="${prod.key}">Open Box</button>
+        </div>
+      </div>
+      <button class="case-break-btn" data-case="${prod.key}">
+        Break Full Case (${boxes}x) — <span class="coin-ic" style="width:10px;height:10px; display:inline-block; vertical-align:-1px;"></span>${casePrice}
+      </button>
+    `;
+    grid.appendChild(div);
+  });
+  grid.querySelectorAll(".buy-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const prod = PRODUCTS[btn.dataset.prod];
+      if(state.coins < prod.price){
+        showModal("Not enough coins", `${prod.name} costs ${prod.price} Prism Coins. Sell duplicate cards from your Binder, finish a daily bounty, or claim a milestone — check the Rewards tab.`);
+        return;
+      }
+      state.coins -= prod.price;
+      state.totalSpent += prod.price;
+      saveState();
+      updateWallet();
+      openBox(prod);
+    });
+  });
+  grid.querySelectorAll(".case-break-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const prod = PRODUCTS[btn.dataset.case];
+      const boxes = BOXES_PER_CASE[prod.key];
+      const casePrice = Math.round(prod.price * boxes * CASE_DISCOUNT);
+      if(state.coins < casePrice){
+        showModal("Not enough coins", `Breaking a full ${prod.name} case costs ${casePrice} Prism Coins (${boxes} boxes at a 10% discount). Build up coins first.`);
+        return;
+      }
+      state.coins -= casePrice;
+      state.totalSpent += casePrice;
+      saveState();
+      updateWallet();
+      openCase(prod, boxes);
+    });
+  });
+  grid.querySelectorAll("[data-odds]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      showView("odds");
+      setTimeout(()=>{
+        const el = document.getElementById("odds-block-"+btn.dataset.odds);
+        if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+      }, 60);
+    });
+  });
+}
+function updateWallet(){
+  document.getElementById("coinCount").textContent = state.coins.toLocaleString();
+}
+function updateHeroStats(){
+  const el = document.getElementById("pityHeroStat");
+  if(el) el.innerHTML = `<b>${state.pityCounter}/${PITY_THRESHOLD}</b><span>Pity Meter</span>`;
+}
+
+/* ============================================================
+   ODDS BOARD — full pull-rate breakdown per product, with
+   live rendered examples of each rarity tier
+   ============================================================ */
+const RARITY_ORDER_DISPLAY = ["base","holo","prism","chrome","vertex","radiant"];
+function renderOddsBoard(){
+  const board = document.getElementById("oddsBoard");
+  board.innerHTML = "";
+  Object.values(PRODUCTS).forEach(prod=>{
+    const section = document.createElement("div");
+    section.id = "odds-block-"+prod.key;
+    section.style.marginBottom = "34px";
+    section.style.background = "var(--panel)";
+    section.style.border = "1px solid var(--line)";
+    section.style.borderRadius = "14px";
+    section.style.padding = "20px";
+
+    const head = document.createElement("div");
+    head.style.display = "flex";
+    head.style.justifyContent = "space-between";
+    head.style.alignItems = "center";
+    head.style.marginBottom = "14px";
+    head.style.flexWrap = "wrap";
+    head.style.gap = "8px";
+    head.innerHTML = `
+      <div>
+        <div class="display" style="color:#fff; font-size:19px;">${prod.name}</div>
+        <div style="color:var(--chrome-dim); font-size:12px; margin-top:2px;">
+          ${prod.cpp} cards/pack &middot; ${prod.ppb} packs/box &middot; ${prod.cpp*prod.ppb} cards per box
+        </div>
+      </div>
+      <button class="buy-btn" data-prod="${prod.key}">Open for ${prod.price}</button>
+    `;
+    section.appendChild(head);
+
+    const rowsWrap = document.createElement("div");
+    rowsWrap.className = "odds-rows";
+    // use a fixed sample card so examples are consistent to compare across products
+    const sampleNum = 1;
+
+    RARITY_ORDER_DISPLAY.forEach(rk=>{
+      const pct = prod.odds[rk] || 0;
+      if(pct <= 0) return;
+      const r = RARITY[rk];
+      const serial = r.numbered ? r.run : 0; // show max-numbered example, e.g. "25/25"
+      const row = document.createElement("div");
+      row.className = "odds-row";
+      const thumb = document.createElement("div");
+      thumb.className = "odds-thumb";
+      const cardEl = buildCardDOM(sampleNum, rk, serial);
+      thumb.appendChild(cardEl);
+      const info = document.createElement("div");
+      info.className = "odds-info";
+      const oneInX = pct>0 ? Math.round(1/pct) : "—";
+      info.innerHTML = `
+        <div class="rname" style="color:${r.color}">${r.label}</div>
+        <div class="rmeta">${r.numbered ? `Numbered to /${r.run}` : "Unnumbered"} &middot; about 1 in ${oneInX} cards</div>
+      `;
+      const pctEl = document.createElement("div");
+      pctEl.className = "odds-pct";
+      pctEl.textContent = (pct*100 < 0.1 ? (pct*100).toFixed(2) : (pct*100).toFixed(1)) + "%";
+      row.appendChild(thumb);
+      row.appendChild(info);
+      row.appendChild(pctEl);
+      rowsWrap.appendChild(row);
+    });
+    if(prod.insertOdds){
+      const r = RARITY.insert;
+      const row = document.createElement("div");
+      row.className = "odds-row";
+      const thumb = document.createElement("div");
+      thumb.className = "odds-thumb";
+      thumb.appendChild(buildCardDOM(sampleNum, "insert", r.run));
+      const info = document.createElement("div");
+      info.className = "odds-info";
+      const oneInX = Math.round(1/prod.insertOdds);
+      info.innerHTML = `
+        <div class="rname" style="color:${r.color}">${r.label} (Insert)</div>
+        <div class="rmeta">Numbered to /${r.run} &middot; replaces last slot in a pack, about 1 in ${oneInX} packs</div>
+      `;
+      const pctEl = document.createElement("div");
+      pctEl.className = "odds-pct";
+      pctEl.textContent = (prod.insertOdds*100).toFixed(1) + "%";
+      row.appendChild(thumb); row.appendChild(info); row.appendChild(pctEl);
+      rowsWrap.appendChild(row);
+    }
+    section.appendChild(rowsWrap);
+    if(prod.hitSlots){
+      const note = document.createElement("div");
+      note.style.marginTop = "10px";
+      note.style.fontSize = "11.5px";
+      note.style.color = "var(--chrome-dim)";
+      note.textContent = `This format guarantees at least one Prism-or-better card per box. A pity system also forces a Chrome-or-better within ${PITY_THRESHOLD} packs of not pulling one, across every format.`;
+      section.appendChild(note);
+    }
+    board.appendChild(section);
+  });
+  board.querySelectorAll(".buy-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const prod = PRODUCTS[btn.dataset.prod];
+      if(state.coins < prod.price){
+        showModal("Not enough coins", `${prod.name} costs ${prod.price} Prism Coins. Sell duplicate cards from your Binder, finish a daily bounty, or claim a milestone — check the Rewards tab.`);
+        return;
+      }
+      state.coins -= prod.price;
+      state.totalSpent += prod.price;
+      saveState();
+      updateWallet();
+      openBox(prod);
+    });
+  });
+}
+
+/* ============================================================
+   REWARDS — daily bounties + milestone ladder + sell dupes
+   ============================================================ */
+function renderRewards(){
+  ensureBounties();
+  const board = document.getElementById("rewardsBoard");
+  board.innerHTML = "";
+
+  /* ---- Daily bounties ---- */
+  const bountySection = document.createElement("div");
+  bountySection.className = "rewards-section";
+  bountySection.innerHTML = `<div class="rewards-heading">Today's Bounties <span class="rewards-sub">resets daily</span></div>`;
+  const bountyGrid = document.createElement("div");
+  bountyGrid.className = "bounty-grid";
+  state.bountyIds.forEach((bid, i)=>{
+    const b = BOUNTY_POOL.find(x=>x.id===bid);
+    if(!b) return;
+    const progress = Math.min(bountyProgressValue(b), b.target);
+    const complete = progress >= b.target;
+    const claimed = state.bountyClaimed[i];
+    const card = document.createElement("div");
+    card.className = "bounty-card" + (claimed ? " claimed" : complete ? " ready" : "");
+    card.innerHTML = `
+      <div class="bounty-desc">${b.desc}</div>
+      <div class="bounty-bar"><div class="bounty-fill" style="width:${Math.min(100,(progress/b.target)*100)}%"></div></div>
+      <div class="bounty-foot">
+        <span class="bounty-progress">${progress}/${b.target}</span>
+        <span class="bounty-reward"><div class="coin-ic" style="width:12px;height:12px;"></div>${b.reward}</span>
+      </div>
+      <button class="solid-btn bounty-claim" ${(!complete||claimed) ? "disabled" : ""} style="${claimed?'opacity:.4;':''}">
+        ${claimed ? "Claimed" : complete ? "Claim" : "In Progress"}
+      </button>
+    `;
+    if(complete && !claimed){
+      card.querySelector(".bounty-claim").addEventListener("click", ()=>{
+        state.coins += b.reward;
+        state.bountyClaimed[i] = true;
+        saveState();
+        updateWallet();
+        sfxCoin();
+        toast(`+${b.reward} Prism Coins — bounty complete`);
+        renderRewards();
+      });
+    }
+    bountyGrid.appendChild(card);
+  });
+  bountySection.appendChild(bountyGrid);
+  board.appendChild(bountySection);
+
+  /* ---- Milestone ladder ---- */
+  const msSection = document.createElement("div");
+  msSection.className = "rewards-section";
+  const uniq = uniqueCount();
+  msSection.innerHTML = `<div class="rewards-heading">Set Completion Ladder <span class="rewards-sub">${uniq}/300 unique cards</span></div>`;
+  const ladder = document.createElement("div");
+  ladder.className = "milestone-ladder";
+  MILESTONES.forEach(m=>{
+    const reached = uniq >= m.count;
+    const claimed = state.milestonesClaimed.includes(m.count);
+    const row = document.createElement("div");
+    row.className = "milestone-row" + (claimed?" claimed":reached?" ready":"");
+    row.innerHTML = `
+      <div class="ms-count">${m.count}<span>cards</span></div>
+      <div class="ms-bar"><div class="ms-fill" style="width:${Math.min(100,(uniq/m.count)*100)}%"></div></div>
+      <div class="ms-reward"><div class="coin-ic" style="width:12px;height:12px;"></div>${m.reward}</div>
+      <button class="ghost-btn ms-claim" ${(!reached||claimed)?"disabled":""}>${claimed?"Claimed":reached?"Claim":"Locked"}</button>
+    `;
+    if(reached && !claimed){
+      row.querySelector(".ms-claim").addEventListener("click", ()=>{
+        state.coins += m.reward;
+        state.milestonesClaimed.push(m.count);
+        saveState();
+        updateWallet();
+        sfxCoin();
+        toast(`+${m.reward} Prism Coins — ${m.count}-card milestone`);
+        renderRewards();
+      });
+    }
+    ladder.appendChild(row);
+  });
+  msSection.appendChild(ladder);
+  board.appendChild(msSection);
+
+  /* ---- Sell duplicates ---- */
+  const dupeCount = Object.values(state.collection).reduce((s,c)=> s + Math.max(0,c-1), 0);
+  const dupeValue = Object.entries(state.collection).reduce((s,[k,c])=>{
+    const rarity = k.split("|")[1];
+    return s + Math.max(0,c-1)*(SELL_VALUE[rarity]||0);
+  }, 0);
+  const sellSection = document.createElement("div");
+  sellSection.className = "rewards-section";
+  sellSection.innerHTML = `
+    <div class="rewards-heading">Sell Duplicates</div>
+    <div class="sell-panel">
+      <div>
+        <div style="color:#fff; font-family:'Oswald',sans-serif; font-size:16px;">${dupeCount} duplicate card${dupeCount===1?"":"s"} in your binder</div>
+        <div style="color:var(--chrome-dim); font-size:12.5px; margin-top:2px;">Sell price scales with rarity — Radiant dupes are worth the most. Your first copy of every card is always kept.</div>
+      </div>
+      <button class="buy-btn" id="sellAllDupesBtn" ${dupeCount===0?"disabled":""}>Sell All (+${dupeValue})</button>
+    </div>
+  `;
+  board.appendChild(sellSection);
+  const sellBtn = document.getElementById("sellAllDupesBtn");
+  if(sellBtn && dupeCount>0){
+    sellBtn.addEventListener("click", ()=>{
+      const res = sellAllDupes();
+      sfxCoin();
+      toast(`Sold ${res.cardsCount} duplicates for +${res.total} Prism Coins`);
+      renderRewards();
+    });
+  }
+
+  /* ---- Wildcards ---- */
+  const wcSection = document.createElement("div");
+  wcSection.className = "rewards-section";
+  const meltable = Math.floor(availableDupeUnits()/WILDCARD_MELT_COST);
+  wcSection.innerHTML = `
+    <div class="rewards-heading">Wildcards <span class="rewards-sub">${state.wildcards} in hand</span></div>
+    <div class="sell-panel">
+      <div>
+        <div style="color:#fff; font-family:'Oswald',sans-serif; font-size:16px;">Melt ${WILDCARD_MELT_COST} duplicates into 1 Wildcard</div>
+        <div style="color:var(--chrome-dim); font-size:12.5px; margin-top:2px;">Redeem a Wildcard for any specific missing card from the Checklist tab. Cheapest duplicates are melted first.</div>
+      </div>
+      <button class="buy-btn" id="meltDupesBtn" ${meltable<1?"disabled":""}>Melt ${WILDCARD_MELT_COST} Dupes</button>
+    </div>
+  `;
+  board.appendChild(wcSection);
+  const meltBtn = document.getElementById("meltDupesBtn");
+  if(meltBtn && meltable>=1){
+    meltBtn.addEventListener("click", ()=>{
+      if(meltDupesToWildcard()){
+        sfxCoin();
+        toast("Wildcard created — redeem it from the Checklist tab");
+        updateWallet();
+        renderRewards();
+      }
+    });
+  }
+}
+
+/* ============================================================
+   ACHIEVEMENTS VIEW
+   ============================================================ */
+const ACH_ICONS = {
+  first_holo:"✦", first_chrome:"◆", first_vertex:"▲", first_radiant:"★", first_insert:"🏈",
+  boxes_10:"📦", boxes_50:"📦", case_break:"🗃", team_1:"🏆", team_12:"👑",
+  wildcard_made:"🃏", graded_1:"🏷", spender_1000:"💰", collector_300:"📖",
+};
+function renderAchievements(){
+  const grid = document.getElementById("achievementsGrid");
+  grid.innerHTML = "";
+  ACHIEVEMENTS.forEach(a=>{
+    const unlocked = state.achievementsUnlocked.includes(a.id);
+    const card = document.createElement("div");
+    card.className = "ach-card" + (unlocked ? " unlocked" : "");
+    card.innerHTML = `
+      <div class="ach-icon">${ACH_ICONS[a.id]||"?"}</div>
+      <div>
+        <div class="ach-name">${a.name}</div>
+        <div class="ach-desc">${a.desc}</div>
+        <div class="ach-reward">${unlocked ? "Unlocked" : "Reward"} — +${a.reward} coins</div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+/* ============================================================
+   RIP FLOW
+   ============================================================ */
+let ripQueue = []; // flat list of {num, rarity, serial}
+let ripIndex = 0;
+let currentProduct = null;
+let pendingTeamBonuses = [];
+
+function openBox(prod){
+  currentProduct = prod;
+  ripQueue = generatePacks(prod, prod.ppb).flat();
+  ripIndex = 0;
+  state.boxesOpened++;
+  saveState();
+  showView("rip");
+  renderPackIntro();
+}
+
+function renderPackIntro(){
+  const stage = document.getElementById("ripStage");
+  const packNum = Math.floor(ripIndex/currentProduct.cpp)+1;
+  const totalPacks = currentProduct.ppb;
+  stage.innerHTML = "";
+
+  const topRow = document.createElement("div");
+  topRow.className = "rip-top-row";
+  const dots = document.createElement("div");
+  dots.className = "rip-progress";
+  for(let i=0;i<totalPacks;i++){
+    const d = document.createElement("div");
+    d.className = "rip-dot" + (i<packNum-1?" done":"") + (i===packNum-1?" now":"");
+    dots.appendChild(d);
+  }
+  topRow.appendChild(dots);
+  const fastToggle = document.createElement("button");
+  fastToggle.className = "fast-toggle" + (state.fastOpen ? " on" : "");
+  fastToggle.textContent = "Fast Open: " + (state.fastOpen ? "On" : "Off");
+  fastToggle.addEventListener("click", ()=>{
+    state.fastOpen = !state.fastOpen;
+    saveState();
+    renderPackIntro();
+  });
+  topRow.appendChild(fastToggle);
+  stage.appendChild(topRow);
+
+  const pityNote = document.createElement("div");
+  pityNote.className = "pity-note";
+  pityNote.textContent = `Pity meter: ${state.pityCounter}/${PITY_THRESHOLD} packs since your last Chrome+`;
+  stage.appendChild(pityNote);
+
+  const wrap = document.createElement("div");
+  wrap.className = "pack-wrap";
+  wrap.innerHTML = `
+    <div class="pack-foil ${currentProduct.cls}" id="packFoil">
+      <div class="pf-sheen"></div>
+      <div class="pf-title">PRISM RUSH</div>
+      <div class="pf-sub">${currentProduct.name} &middot; Pack ${packNum}/${totalPacks}</div>
+    </div>`;
+  stage.appendChild(wrap);
+
+  const hint = document.createElement("div");
+  hint.className = "tap-hint";
+  hint.textContent = "Tap the pack to rip it open";
+  stage.appendChild(hint);
+
+  wrap.addEventListener("click", ()=>{
+    sfxTear();
+    document.getElementById("packFoil").classList.add("tearing");
+    setTimeout(()=>{ revealPackCards(); }, state.fastOpen ? 140 : 480);
+  }, {once:true});
+}
+
+function revealPackCards(){
+  const stage = document.getElementById("ripStage");
+  stage.innerHTML = "";
+  const zone = document.createElement("div");
+  zone.className = "card-reveal-zone";
+  stage.appendChild(zone);
+
+  const packCards = ripQueue.slice(ripIndex, ripIndex+currentProduct.cpp);
+  let revealed = 0;
+  const stagger = state.fastOpen ? 40 : 220;
+
+  packCards.forEach((pc, i)=>{
+    const holder = document.createElement("div");
+    holder.style.opacity = "0";
+    holder.style.transform = "translateY(18px) scale(.92)";
+    holder.style.transition = "opacity .4s ease, transform .4s ease";
+    const isNew = !ownsNum(pc.num);
+    const isWishlisted = state.wishlist.includes(pc.num);
+    const cardEl = buildCardDOM(pc.num, pc.rarity, pc.serial);
+    if(isNew){
+      const flag = document.createElement("div");
+      flag.className = "newcard-flag";
+      flag.textContent = "NEW";
+      cardEl.appendChild(flag);
+    }
+    const capt = document.createElement("div");
+    capt.className = "card-caption";
+    capt.innerHTML = `<div class="rarity-label" style="color:${RARITY[pc.rarity].color}">${RARITY[pc.rarity].label}</div>${isWishlisted?'<div class="wishlist-hit-label">★ Wishlist Hit</div>':''}`;
+    holder.appendChild(cardEl);
+    holder.appendChild(capt);
+    zone.appendChild(holder);
+
+    setTimeout(()=>{
+      holder.style.opacity = "1";
+      holder.style.transform = "translateY(0) scale(1)";
+      sfxFlip(pc.rarity);
+      const wasNew = addCard(pc.num, pc.rarity, pc.serial);
+      state.totalOpened++;
+      if(wasNew){
+        state.dailyProgress.newcards++;
+        if(isWishlisted){
+          state.wishlist = state.wishlist.filter(n=>n!==pc.num);
+          toast(`★ Wishlist hit! ${cardByNum(pc.num).name} added.`);
+        }
+        const card = cardByNum(pc.num);
+        const bonus = checkTeamCompletion(card.team);
+        if(bonus) pendingTeamBonuses.push(bonus);
+      }
+      state.dailyProgress.bestRarityRank = Math.max(state.dailyProgress.bestRarityRank, RARITY_RANK[pc.rarity]);
+      revealed++;
+      if(revealed===packCards.length){
+        state.dailyProgress.packs++;
+        checkAchievements();
+        saveState();
+        if(pendingTeamBonuses.length){
+          showTeamBonusModal(pendingTeamBonuses.shift(), showPackControls);
+        } else {
+          showPackControls();
+        }
+      }
+    }, stagger*i + 120);
+  });
+}
+
+function showPackControls(){
+  const stage = document.getElementById("ripStage");
+  const controls = document.createElement("div");
+  controls.className = "rip-controls";
+  ripIndex += currentProduct.cpp;
+  const packsLeft = ripQueue.length - ripIndex;
+  if(packsLeft > 0){
+    const btn = document.createElement("button");
+    btn.className = "solid-btn";
+    btn.textContent = "Open Next Pack";
+    btn.addEventListener("click", renderPackIntro);
+    controls.appendChild(btn);
+  } else {
+    const btn = document.createElement("button");
+    btn.className = "solid-btn";
+    btn.textContent = "Box Complete — View Summary";
+    btn.addEventListener("click", renderBoxSummary);
+    controls.appendChild(btn);
+  }
+  const back = document.createElement("button");
+  back.className = "ghost-btn";
+  back.textContent = "Back to Shop";
+  back.addEventListener("click", ()=>showView("shop"));
+  controls.appendChild(back);
+  stage.appendChild(controls);
+}
+
+function renderBoxSummary(){
+  const stage = document.getElementById("ripStage");
+  stage.innerHTML = "";
+  const wrap = document.createElement("div");
+  wrap.className = "summary-wrap";
+  const best = [...ripQueue].sort((a,b)=>{
+    const order = ["radiant","vertex","chrome","prism","holo","base"];
+    return order.indexOf(a.rarity)-order.indexOf(b.rarity);
+  }).slice(0,6);
+  wrap.innerHTML = `<h2>${currentProduct.name} Complete</h2><p>Best pulls from this box</p>`;
+  const grid = document.createElement("div");
+  grid.className = "summary-grid";
+  best.forEach(pc=>{
+    const holder = document.createElement("div");
+    holder.appendChild(buildCardDOM(pc.num, pc.rarity, pc.serial));
+    grid.appendChild(holder);
+  });
+  wrap.appendChild(grid);
+  const controls = document.createElement("div");
+  controls.className = "rip-controls";
+  controls.style.justifyContent = "center";
+  const shopBtn = document.createElement("button");
+  shopBtn.className = "solid-btn";
+  shopBtn.textContent = "Back to Shop";
+  shopBtn.addEventListener("click", ()=>showView("shop"));
+  const binderBtn = document.createElement("button");
+  binderBtn.className = "ghost-btn";
+  binderBtn.textContent = "Go to Binder";
+  binderBtn.addEventListener("click", ()=>showView("binder"));
+  controls.appendChild(binderBtn);
+  controls.appendChild(shopBtn);
+  wrap.appendChild(controls);
+  stage.appendChild(wrap);
+}
+
+/* ============================================================
+   CASE BREAK MODE — open an entire case in one batch, no
+   per-pack animation. All cards process through the same
+   pity/insert/team-completion logic as a normal box.
+   ============================================================ */
+function openCase(prod, boxCount){
+  showView("rip");
+  const stage = document.getElementById("ripStage");
+  stage.innerHTML = `<div class="case-loading">
+    <div class="case-loading-spin"></div>
+    <div>Breaking ${boxCount} ${prod.name}${boxCount>1?"es":""}&hellip;</div>
+  </div>`;
+
+  setTimeout(()=>{
+    const totalPacks = prod.ppb * boxCount;
+    const packs = generatePacks(prod, totalPacks);
+    const allCards = packs.flat();
+    const rarityCounts = {base:0,holo:0,prism:0,chrome:0,vertex:0,radiant:0,insert:0};
+    pendingTeamBonuses = [];
+    const wishlistHits = [];
+
+    allCards.forEach(pc=>{
+      const wasNew = addCard(pc.num, pc.rarity, pc.serial);
+      state.totalOpened++;
+      rarityCounts[pc.rarity]++;
+      if(wasNew){
+        state.dailyProgress.newcards++;
+        if(state.wishlist.includes(pc.num)){
+          state.wishlist = state.wishlist.filter(n=>n!==pc.num);
+          wishlistHits.push(pc);
+        }
+        const card = cardByNum(pc.num);
+        const bonus = checkTeamCompletion(card.team);
+        if(bonus) pendingTeamBonuses.push(bonus);
+      }
+      state.dailyProgress.bestRarityRank = Math.max(state.dailyProgress.bestRarityRank, RARITY_RANK[pc.rarity]);
+    });
+    state.dailyProgress.packs += totalPacks;
+    state.boxesOpened += boxCount;
+    state.casesOpened++;
+    checkAchievements();
+    saveState();
+    updateWallet();
+
+    renderCaseSummary(prod, boxCount, allCards, rarityCounts, wishlistHits);
+  }, 500);
+}
+
+function renderCaseSummary(prod, boxCount, allCards, rarityCounts, wishlistHits){
+  const stage = document.getElementById("ripStage");
+  stage.innerHTML = "";
+  const wrap = document.createElement("div");
+  wrap.className = "summary-wrap";
+  wrap.innerHTML = `<h2>${prod.name} Case Complete</h2><p>${boxCount} boxes &middot; ${allCards.length} cards opened</p>`;
+
+  const statsRow = document.createElement("div");
+  statsRow.className = "case-stats-row";
+  Object.entries(rarityCounts).forEach(([rk,count])=>{
+    if(count<=0) return;
+    const chip = document.createElement("div");
+    chip.className = "case-stat-chip";
+    chip.innerHTML = `<b style="color:${RARITY[rk].color}">${count}</b><span>${RARITY[rk].label}</span>`;
+    statsRow.appendChild(chip);
+  });
+  wrap.appendChild(statsRow);
+
+  if(wishlistHits.length){
+    const wl = document.createElement("div");
+    wl.style.color = "var(--gold)";
+    wl.style.fontSize = "13px";
+    wl.style.margin = "14px 0";
+    wl.textContent = `★ ${wishlistHits.length} wishlist card${wishlistHits.length>1?"s":""} hit this case!`;
+    wrap.appendChild(wl);
+  }
+
+  const best = [...allCards].sort((a,b)=>{
+    const order = ["radiant","vertex","chrome","insert","prism","holo","base"];
+    return order.indexOf(a.rarity)-order.indexOf(b.rarity);
+  }).slice(0,12);
+  const label = document.createElement("div");
+  label.className = "rewards-heading";
+  label.style.marginTop = "20px";
+  label.textContent = "Best Pulls";
+  wrap.appendChild(label);
+  const grid = document.createElement("div");
+  grid.className = "summary-grid";
+  best.forEach(pc=>{
+    const holder = document.createElement("div");
+    holder.appendChild(buildCardDOM(pc.num, pc.rarity, pc.serial));
+    grid.appendChild(holder);
+  });
+  wrap.appendChild(grid);
+
+  if(pendingTeamBonuses.length){
+    const tb = document.createElement("div");
+    tb.style.marginTop = "16px";
+    tb.style.color = "var(--gold)";
+    tb.style.fontSize = "13px";
+    tb.textContent = `${pendingTeamBonuses.length} team set${pendingTeamBonuses.length>1?"s":""} completed this case — bonus cards added to your binder.`;
+    wrap.appendChild(tb);
+  }
+
+  const controls = document.createElement("div");
+  controls.className = "rip-controls";
+  controls.style.justifyContent = "center";
+  const shopBtn = document.createElement("button");
+  shopBtn.className = "solid-btn";
+  shopBtn.textContent = "Back to Shop";
+  shopBtn.addEventListener("click", ()=>showView("shop"));
+  const binderBtn = document.createElement("button");
+  binderBtn.className = "ghost-btn";
+  binderBtn.textContent = "Go to Binder";
+  binderBtn.addEventListener("click", ()=>showView("binder"));
+  controls.appendChild(binderBtn);
+  controls.appendChild(shopBtn);
+  wrap.appendChild(controls);
+  stage.appendChild(wrap);
+}
+
+/* ============================================================
+   TROPHY CASE — best (rarest) owned card per team
+   ============================================================ */
+function renderTrophyCase(){
+  const grid = document.getElementById("trophyGrid");
+  grid.innerHTML = "";
+  const rarityOrder = ["radiant","vertex","chrome","insert","prism","holo","base"];
+  TEAMS.forEach(team=>{
+    const teamCards = CARDS.filter(c=>c.team===team.id);
+    let best = null;
+    teamCards.forEach(c=>{
+      Object.keys(state.collection).forEach(k=>{
+        const [n, rarity, serial] = k.split("|");
+        if(Number(n)!==c.num) return;
+        if(!best || rarityOrder.indexOf(rarity) < rarityOrder.indexOf(best.rarity)){
+          best = {num:c.num, rarity, serial: serial?Number(serial):0};
+        }
+      });
+    });
+    const slot = document.createElement("div");
+    slot.className = "trophy-slot";
+    const label = document.createElement("div");
+    label.className = "trophy-label";
+    label.textContent = team.city+" "+team.mascot;
+    if(best){
+      const holder = document.createElement("div");
+      holder.className = "mini-tcard-holder";
+      holder.appendChild(buildCardDOM(best.num, best.rarity, best.serial));
+      holder.addEventListener("click", ()=>openBinderModal(best.num));
+      slot.appendChild(holder);
+    } else {
+      const locked = document.createElement("div");
+      locked.className = "mini-card-locked";
+      locked.innerHTML = `<div class="lock-icon">&#128274;</div><div class="mc-num">No pulls yet</div>`;
+      slot.appendChild(locked);
+    }
+    slot.appendChild(label);
+    grid.appendChild(slot);
+  });
+}
+
+/* ============================================================
+   BINDER
+   ============================================================ */
+function renderBinder(){
+  const statsEl = document.getElementById("binderStats");
+  const uniq = uniqueCount();
+  statsEl.innerHTML = `
+    <div class="stat-pill"><b>${uniq}/300</b><span>Base Set</span></div>
+    <div class="stat-pill"><b>${Math.round(uniq/300*100)}%</b><span>Complete</span></div>
+    <div class="stat-pill"><b>${state.totalOpened}</b><span>Cards Opened</span></div>
+  `;
+
+  const teamSel = document.getElementById("teamFilter");
+  if(!teamSel.dataset.built){
+    teamSel.innerHTML = `<option value="all">All Teams</option>` + TEAMS.map(t=>`<option value="${t.id}">${t.city} ${t.mascot}</option>`).join("");
+    teamSel.dataset.built = "1";
+    teamSel.addEventListener("change", renderBinderGrid);
+  }
+
+  const rf = document.getElementById("rarityFilter");
+  if(!rf.dataset.built){
+    rf.innerHTML = "";
+    const allBtn = document.createElement("button");
+    allBtn.className = "filter-btn active"; allBtn.textContent = "All Rarities"; allBtn.dataset.r = "all";
+    rf.appendChild(allBtn);
+    Object.values(RARITY).forEach(r=>{
+      const b = document.createElement("button");
+      b.className = "filter-btn"; b.textContent = r.label; b.dataset.r = r.key;
+      rf.appendChild(b);
+    });
+    rf.addEventListener("click", (e)=>{
+      if(e.target.classList.contains("filter-btn")){
+        rf.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+        e.target.classList.add("active");
+        renderBinderGrid();
+      }
+    });
+    rf.dataset.built = "1";
+  }
+  renderWishlistStrip();
+  renderBinderGrid();
+}
+
+function renderBinderGrid(){
+  const grid = document.getElementById("binderGrid");
+  grid.innerHTML = "";
+  const teamFilter = document.getElementById("teamFilter").value;
+  const rarityFilter = document.querySelector("#rarityFilter .filter-btn.active")?.dataset.r || "all";
+  const rarityOrder = ["radiant","vertex","chrome","insert","prism","holo","base"];
+
+  let list = CARDS.filter(c => teamFilter==="all" || c.team===teamFilter);
+
+  list.forEach(card=>{
+    const ownedKeys = Object.keys(state.collection).filter(k=>{
+      const [n] = k.split("|");
+      return Number(n)===card.num;
+    });
+    const ownedMatchingFilter = ownedKeys.filter(k=>{
+      const r = k.split("|")[1];
+      return rarityFilter==="all" || r===rarityFilter;
+    });
+    if(rarityFilter!=="all" && ownedMatchingFilter.length===0) return;
+
+    const cellWrap = document.createElement("div");
+    cellWrap.className = "binder-cell";
+
+    if(ownedKeys.length){
+      // pick the best (rarest) owned copy to visually feature, or best matching the active filter
+      const featurePool = rarityFilter==="all" ? ownedKeys : ownedMatchingFilter;
+      const best = featurePool.sort((a,b)=> rarityOrder.indexOf(a.split("|")[1]) - rarityOrder.indexOf(b.split("|")[1]))[0];
+      const [, rarity, serial] = best.split("|");
+      const totalCount = ownedKeys.reduce((s,k)=>s+state.collection[k],0);
+
+      const holder = document.createElement("div");
+      holder.className = "mini-tcard-holder";
+      const cardEl = buildCardDOM(card.num, rarity, serial ? Number(serial) : 0);
+      holder.appendChild(cardEl);
+      if(totalCount>1){
+        const dupe = document.createElement("div");
+        dupe.className = "mc-dupe";
+        dupe.textContent = "x"+totalCount;
+        holder.appendChild(dupe);
+      }
+      holder.addEventListener("click", ()=>openBinderModal(card.num));
+      cellWrap.appendChild(holder);
+
+      // rarity badges — every distinct rarity owned for this card number
+      const distinctRarities = [...new Set(ownedKeys.map(k=>k.split("|")[1]))]
+        .sort((a,b)=> rarityOrder.indexOf(a)-rarityOrder.indexOf(b));
+      if(distinctRarities.length){
+        const dots = document.createElement("div");
+        dots.className = "rarity-dots";
+        distinctRarities.forEach(rk=>{
+          const dot = document.createElement("div");
+          dot.className = "rarity-dot";
+          dot.style.background = RARITY[rk].color;
+          dot.style.color = RARITY[rk].color;
+          dot.title = RARITY[rk].label;
+          dots.appendChild(dot);
+        });
+        cellWrap.appendChild(dots);
+      }
+    } else {
+      const locked = document.createElement("div");
+      locked.className = "mini-card-locked";
+      const pinned = state.wishlist.includes(card.num);
+      locked.innerHTML = `
+        <div class="lock-icon">&#128274;</div>
+        <div class="mc-num">NO. ${String(card.num).padStart(3,"0")}</div>
+        <button class="checklist-row-btn${pinned?" pinned":""}" data-pin="${card.num}">${pinned?"★ Pinned":"☆ Wishlist"}</button>
+      `;
+      cellWrap.appendChild(locked);
+    }
+    grid.appendChild(cellWrap);
+  });
+
+  grid.querySelectorAll("[data-pin]").forEach(btn=>{
+    btn.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      const num = Number(btn.dataset.pin);
+      if(state.wishlist.includes(num)){
+        state.wishlist = state.wishlist.filter(n=>n!==num);
+      } else {
+        state.wishlist.push(num);
+      }
+      saveState();
+      renderBinderGrid();
+      renderWishlistStrip();
+    });
+  });
+
+  if(grid.children.length===0){
+    grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--chrome-dim); padding:40px 0;">No cards match this filter yet — go open some packs.</div>`;
+  }
+}
+
+function renderWishlistStrip(){
+  const strip = document.getElementById("wishlistStrip");
+  if(!strip) return;
+  if(state.wishlist.length===0){
+    strip.innerHTML = "";
+    return;
+  }
+  strip.innerHTML = `<div class="wishlist-strip">` +
+    state.wishlist.map(num=>{
+      const c = cardByNum(num);
+      return `<div class="wishlist-chip">★ ${c.name} <span style="color:var(--chrome-dim)">#${String(num).padStart(3,"0")}</span><button data-unpin="${num}">&times;</button></div>`;
+    }).join("") +
+    `</div>`;
+  strip.querySelectorAll("[data-unpin]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const num = Number(btn.dataset.unpin);
+      state.wishlist = state.wishlist.filter(n=>n!==num);
+      saveState();
+      renderWishlistStrip();
+      renderBinderGrid();
+    });
+  });
+}
+
+function openBinderModal(num){
+  const card = cardByNum(num);
+  const team = teamOf(card.team);
+  const rarityOrder = ["radiant","vertex","chrome","insert","prism","holo","base"];
+  const ownedKeys = Object.keys(state.collection).filter(k=> Number(k.split("|")[0])===num)
+    .sort((a,b)=> rarityOrder.indexOf(a.split("|")[1]) - rarityOrder.indexOf(b.split("|")[1]));
+
+  const overlay = document.getElementById("cardModalOverlay");
+  const body = document.getElementById("cardModalBody");
+  body.innerHTML = "";
+
+  const feature = document.createElement("div");
+  feature.className = "card-modal-feature";
+  const [ , topRarity, topSerial ] = ownedKeys[0].split("|");
+  const topKey = num+"|"+topRarity+(topSerial?("|"+topSerial):"");
+  feature.appendChild(buildCardDOM(num, topRarity, topSerial ? Number(topSerial) : 0, {graded: state.graded[topKey]}));
+  body.appendChild(feature);
+
+  const info = document.createElement("div");
+  info.className = "card-modal-info";
+  info.innerHTML = `
+    <div class="cmi-name">${card.name}</div>
+    <div class="cmi-meta">${team.city} ${team.mascot} &middot; ${card.pos} &middot; ${card.ovr} OVR &middot; No. ${String(num).padStart(3,"0")} / 300 ${card.rookie ? '&middot; <span style="color:var(--good)">Rated Rookie</span>' : ''}</div>
+    <div class="cmi-sub">Copies owned in this collection</div>
+    <div class="cmi-rows"></div>
+  `;
+  const rows = info.querySelector(".cmi-rows");
+  ownedKeys.forEach(k=>{
+    const [ , rarity, serial ] = k.split("|");
+    const count = state.collection[k];
+    const r = RARITY[rarity];
+    const canGrade = RARITY_RANK[rarity]>=RARITY_RANK.chrome && !state.graded[k];
+    const row = document.createElement("div");
+    row.className = "cmi-row";
+    row.innerHTML = `
+      <span class="cmi-dot" style="background:${r.color}"></span>
+      <span class="cmi-rlabel" style="color:${r.color}">${r.label}</span>
+      <span class="cmi-rserial">${serial && Number(serial)>0 ? "#"+serial+"/"+r.run : ""}${state.graded[k]?` &middot; Graded ${state.graded[k]}`:""}</span>
+      <span class="cmi-rcount">x${count}</span>
+      ${count>1 ? `<button class="cmi-sell" data-num="${num}" data-rarity="${rarity}" data-serial="${serial||0}">Sell 1 (+${SELL_VALUE[rarity]})</button>` : ""}
+      ${canGrade ? `<button class="cmi-sell" data-grade-key="${k}">Grade (-${GRADING_COST})</button>` : ""}
+    `;
+    rows.appendChild(row);
+  });
+  body.appendChild(info);
+  overlay.classList.add("open");
+  overlay.querySelectorAll(".cmi-sell[data-num]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const payout = sellCard(Number(btn.dataset.num), btn.dataset.rarity, Number(btn.dataset.serial)||0, 1);
+      if(payout>0){
+        sfxCoin();
+        toast(`Sold 1 for +${payout} Prism Coins`);
+        openBinderModal(num); // refresh modal in place
+        renderBinderGrid();
+      }
+    });
+  });
+  overlay.querySelectorAll("[data-grade-key]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      if(state.coins < GRADING_COST){
+        showModal("Not enough coins", `Grading costs ${GRADING_COST} Prism Coins.`);
+        return;
+      }
+      const grade = submitForGrading(btn.dataset.gradeKey);
+      if(grade){
+        sfxCoin();
+        toast(`Graded ${grade}!`);
+        updateWallet();
+        openBinderModal(num);
+      }
+    });
+  });
+}
+document.getElementById("cardModalClose").addEventListener("click", ()=>{
+  document.getElementById("cardModalOverlay").classList.remove("open");
+});
+
+/* ============================================================
+   CHECKLIST
+   ============================================================ */
+function renderChecklist(){
+  const toolbar = document.getElementById("checklistToolbar");
+  toolbar.innerHTML = `
+    <div style="color:var(--chrome-dim); font-size:12.5px;">
+      <b style="color:#fff; font-family:'Oswald',sans-serif;">${state.wildcards}</b> wildcard${state.wildcards===1?"":"s"} available — redeem on any missing card below
+    </div>
+  `;
+
+  const grid = document.getElementById("checklistGrid");
+  grid.innerHTML = "";
+  TEAMS.forEach(team=>{
+    const header = document.createElement("div");
+    header.style.gridColumn = "1/-1";
+    header.style.margin = "18px 0 4px";
+    header.innerHTML = `<div class="display" style="color:#fff; font-size:16px; border-bottom:1px solid var(--line); padding-bottom:6px;">${team.city} ${team.mascot}</div>`;
+    grid.appendChild(header);
+    CARDS.filter(c=>c.team===team.id).forEach(c=>{
+      const owned = ownsNum(c.num);
+      const pinned = state.wishlist.includes(c.num);
+      const row = document.createElement("div");
+      row.className = "stat-pill";
+      row.style.display = "flex"; row.style.justifyContent = "space-between"; row.style.alignItems="center";
+      row.innerHTML = `
+        <span style="font-size:12.5px; color:${owned?'#fff':'var(--chrome-dim)'}">${String(c.num).padStart(3,"0")} · ${c.name}${c.rookie?' <span style="color:var(--good);font-size:10px;">RC</span>':''}</span>
+        <span>
+          ${!owned ? `<button class="checklist-row-btn${pinned?" pinned":""}" data-pin="${c.num}">${pinned?"★":"☆"}</button>` : ""}
+          ${!owned && state.wildcards>0 ? `<button class="checklist-row-btn" data-redeem="${c.num}">Redeem</button>` : ""}
+        </span>
+      `;
+      grid.appendChild(row);
+    });
+  });
+
+  grid.querySelectorAll("[data-pin]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const num = Number(btn.dataset.pin);
+      if(state.wishlist.includes(num)){
+        state.wishlist = state.wishlist.filter(n=>n!==num);
+      } else {
+        state.wishlist.push(num);
+      }
+      saveState();
+      renderChecklist();
+    });
+  });
+  grid.querySelectorAll("[data-redeem]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const num = Number(btn.dataset.redeem);
+      if(redeemWildcard(num)){
+        sfxCoin();
+        toast(`Redeemed a Wildcard for ${cardByNum(num).name}`);
+        checkAchievements();
+        renderChecklist();
+      }
+    });
+  });
+}
+
+/* ============================================================
+   DAILY BONUS
+   ============================================================ */
+function checkDaily(){
+  const now = Date.now();
+  const oneDay = 86400000;
+  if(now - state.lastDaily > oneDay){
+    state.lastDaily = now;
+    state.coins += 120;
+    saveState();
+    setTimeout(()=>{ sfxCoin(); toast("Daily bonus: +120 Prism Coins"); updateWallet(); }, 400);
+  }
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+loadState();
+updateWallet();
+ensureBounties();
+renderShop();
+updateHeroStats();
+checkDaily();
+
+})();
+</script>
+</body>
+</html>
